@@ -12,5 +12,5 @@ It works by checking if the player has the sky above them and by scaling the amo
 64y: less particles :(
 <br>
 ## Dependencies
-
-Dust has everything it *needs* but I recommend [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) to be able to use the config screen :p
+Dust requires the [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) but everything else Dust *needs* is included.
+***HOWEVER***, I recommend [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) to be able to use the config screen :p
