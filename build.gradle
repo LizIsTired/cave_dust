@@ -11,6 +11,27 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+		content {
+			includeGroup "maven.modrinth"
+		}
+	}
+	maven {
+		url = "https://maven.shedaniel.me/"
+	}
+	maven {
+		url = "https://maven.terraformersmc.com"
+	}
+	maven {
+		name = 'minelp'
+		url = 'https://repo.minelittlepony-mod.com/maven/snapshot'
+	}
+	maven {
+		name = 'minelp-release'
+		url = 'https://repo.minelittlepony-mod.com/maven/release'
+	}
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
@@ -26,6 +47,15 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.clothconfig_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+	modApi "com.minelittlepony:kirin:${project.kirin_version}"
+	include "com.minelittlepony:kirin:${project.kirin_version}"
+
+	//modImplementation "com.minelittlepony:minelittlepony:${project.minelp_version}"
+	modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
 }
 
 processResources {

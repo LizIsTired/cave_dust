@@ -9,7 +9,7 @@
     "LizIsTired"
   ],
   "contact": {
-    "homepage": "https://github.com/LizIsTired/dust",
+    "issues": "https://github.com/LizIsTired/dust/issues",
     "sources": "https://github.com/LizIsTired/dust"
   },
 
@@ -18,8 +18,11 @@
 
   "environment": "*",
   "entrypoints": {
-    "main": [
-      "net.fabricmc.example.ExampleMod"
+    "client": [
+      "net.fabricmc.example.Dust"
+    ],
+    "modmenu": [
+      "net.fabricmc.example.DustModMenuFactory"
     ]
   },
 
@@ -30,6 +33,14 @@
     "java": ">=17"
   },
   "suggests": {
-    "another-mod": "*"
+    "clothconfig": ">=6.1.48",
+    "modmenu": ">=3.0.1"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/AgBfPFMJgX"
+      }
+    }
   }
 }

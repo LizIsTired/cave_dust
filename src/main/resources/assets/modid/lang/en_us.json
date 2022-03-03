@@ -1,0 +1,5 @@
+{
+  "menu.dust.title": "Dust",
+  "menu.dust.global.false": "Dust: disabled",
+  "menu.dust.global.true": "Dust: enabled"
+}
