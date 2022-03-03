@@ -15,23 +15,24 @@ public class ExampleMod implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-				ClientTickEvents.START_CLIENT_TICK.register((client1) -> {
-
-					World world = client1.world;
-					if (!client1.player.clientWorld.isSkyVisible(client.player.getBlockPos())) {
-						double d = 0;
-						double e = 0;
-						double f = 0;
-						double probabilityClamped = lerp(64,-64,client.player.getBlockY());
-						for (int i = 0; i < probabilityClamped; i++) {
-							d = client.player.getPos().getX() + getRandomNumberUsingInts(-5, 5);
-							e = client.player.getPos().getY() + getRandomNumberUsingInts(-20, 20);
-							f = client.player.getPos().getZ() + getRandomNumberUsingInts(-5, 5);
-							world.addParticle(ParticleTypes.WHITE_ASH, d, e, f, getRandomNumberUsingInts(-5, 20), getRandomNumberUsingInts(-5, 20), getRandomNumberUsingInts(-5, 20));
+		ClientTickEvents.START_CLIENT_TICK.register((client) -> {
+			if(!client.isPaused()){
+				if (client.world != null) {
+					World world = client.world;
+					if (!client.player.clientWorld.isSkyVisible(client.player.getBlockPos())) {
+						double x;
+						double y;
+						double z;
+						double probabilityNormalized = lerp(64, -64, client.player.getBlockY());
+						for (int i = 0; i < probabilityNormalized; i++) {
+							x = client.player.getPos().getX() + getRandomNumberUsingInts(-5, 5);
+							y = client.player.getPos().getY() + getRandomNumberUsingInts(-20, 20);
+							z = client.player.getPos().getZ() + getRandomNumberUsingInts(-5, 5);
+							world.addParticle(ParticleTypes.WHITE_ASH, x, y, z, getRandomNumberUsingInts(-5, 20), getRandomNumberUsingInts(-5, 20), getRandomNumberUsingInts(-5, 20));
 						}
 					}
-				});
+				}
+			}
 		});
 	}
 

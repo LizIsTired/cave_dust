@@ -12,28 +12,39 @@ jobs:
       matrix:
         # Use these Java versions
         java: [
-          17,    # Current Java LTS & minimum supported by Minecraft
+          17    # Minimum supported by Minecraft 1.18
         ]
-        # and run on both Linux and Windows
-        os: [ubuntu-20.04, windows-2022]
+        os: [ubuntu-20.04]  # and run on Linux
     runs-on: ${{ matrix.os }}
+
     steps:
-      - name: checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v2
-      - name: validate gradle wrapper
+
+      - name: Extract current branch name
+        shell: bash
+        # bash pattern expansion to grab branch name without slashes
+        run: ref="${GITHUB_REF#refs/heads/}" && echo "::set-output name=branch::${ref////-}"
+        id: ref
+
+      - name: Validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
-      - name: setup jdk ${{ matrix.java }}
+
+      - name: Setup JDK${{ matrix.java }}
         uses: actions/setup-java@v1
         with:
           java-version: ${{ matrix.java }}
-      - name: make gradle wrapper executable
+
+      - name: Make gradle wrapper executable
         if: ${{ runner.os != 'Windows' }}
-        run: chmod +x ./gradlew
-      - name: build
+        run: chmod +x gradlew
+
+      - name: Build
         run: ./gradlew build
-      - name: capture build artifacts
+
+      - name: Capture build artifacts
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }} # Only upload artifacts built from latest java on one OS
         uses: actions/upload-artifact@v2
         with:
-          name: Artifacts
-          path: build/libs/
+          name: starminerrecrafted-fabric-${{ steps.ref.outputs.branch }}
+          path: build/libs/*[0-9].jar
