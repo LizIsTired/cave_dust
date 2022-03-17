@@ -47,7 +47,7 @@ public class MathHelper {
                 || client.isPaused()
                 || client.world == null
                 || !client.world.getDimension().isBedWorking()
-                || Objects.equals(client.world.getBiomeKey(Objects.requireNonNull(client.player).getBlockPos()), Optional.of(LUSH_CAVES)))
+                || client.world.getBiome(Objects.requireNonNull(client.player).getBlockPos()).matchesKey(LUSH_CAVES))
         {
             timer = 0;
             shouldParticlesSpawn = false;
