@@ -47,7 +47,6 @@ public class MathHelper {
                 || client.isPaused()
                 || client.world == null
                 || !client.world.getDimension().isBedWorking()
-
                 || Objects.equals(client.world.getBiomeKey(Objects.requireNonNull(client.player).getBlockPos()), Optional.of(LUSH_CAVES))
                 || Objects.requireNonNull(client.player).isSubmergedInWater())
         {
