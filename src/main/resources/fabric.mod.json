@@ -1,9 +1,8 @@
 {
   "schemaVersion": 1,
-  "id": "dust",
+  "id": "cavedust",
   "version": "${version}",
-
-  "name": "Dust",
+  "name": "Cave Dust",
   "description": "Makes dust underground that scales with depth!",
   "authors": [
     "LizIsTired"
@@ -12,20 +11,20 @@
     "issues": "https://github.com/LizIsTired/dust/issues",
     "sources": "https://github.com/LizIsTired/dust"
   },
-
   "license": "CC0-1.0",
   "icon": "assets/modid/icon.png",
-
   "environment": "*",
   "entrypoints": {
     "client": [
-      "net.fabricmc.example.Dust"
+      "net.lizistired.cavedust.CaveDust"
     ],
     "modmenu": [
-      "net.fabricmc.example.DustModMenuFactory"
+      "net.lizistired.cavedust.CaveDustModMenuFactory"
     ]
   },
-
+  "mixins": [
+    "dust.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.12.11",
     "fabric": "*",
@@ -33,7 +32,6 @@
     "java": ">=17"
   },
   "suggests": {
-    "clothconfig": ">=6.1.48",
     "modmenu": ">=3.0.1"
   },
   "custom": {
