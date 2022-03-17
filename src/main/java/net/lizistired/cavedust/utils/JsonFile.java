@@ -1,4 +1,4 @@
-package net.fabricmc.example.utils;
+package net.lizistired.cavedust.utils;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.InstanceCreator;
-import net.fabricmc.example.Dust;
+import net.lizistired.cavedust.CaveDust;
 
 public class JsonFile {
     protected transient final Gson gson = new GsonBuilder()
@@ -30,7 +30,7 @@ public class JsonFile {
             try (Reader reader = Files.newBufferedReader(file)) {
                 load(reader);
             } catch (Exception e) {
-                Dust.LOGGER.error("Invalid config", e);
+                CaveDust.LOGGER.error("Invalid config", e);
             }
         }
 
