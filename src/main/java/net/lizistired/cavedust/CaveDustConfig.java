@@ -164,7 +164,7 @@ public class CaveDustConfig extends JsonFile {
 
     public ParticleEffect getParticle(){
         try {
-            return (ParticleEffect) Registry.PARTICLE_TYPE.get(Identifier.tryParse(particleName.toLowerCase()));
+            return (ParticleEffect) Registry.PARTICLE_TYPE.get(new Identifier(particleName.toLowerCase()));
         } catch (ClassCastException e) {
             LOGGER.error(e + "\nThere was an error loading the specified particle from the config, make sure a valid particle name is specified. Falling back to \"minecraft:white_ash\".");
             particleName = "minecraft:white_ash";
