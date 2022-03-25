@@ -52,7 +52,7 @@ jobs:
           java: 17
 
           dependencies: |
-          fabric-api | depends | 0.46.0
+          fabric | depends | 0.46.0
           kirin | includes | 1.10.0-beta.2
           modmenu | recommends | *
 
