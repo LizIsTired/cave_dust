@@ -1,0 +1,60 @@
+name: build-release
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+      - name: Set up JDK 16
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/loom-cache
+            ~/.gradle/wrapper
+            ~/.m2/repository
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: ${{ runner.os }}-gradle
+
+      - run: chmod +x gradlew
+
+      - name: Build Release
+        run: ./gradlew build --stacktrace
+
+      - name: Upload artifacts to Modrinth, Curseforge and GitHub
+        uses: Kir-Antipov/mc-publish@v2.0
+        with:
+          modrinth-id: jawg7zT1
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          curseforge-id: 594750
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+          files: build/libs/!(*-@(dev|sources|all)).jar
+
+          version-type: release
+
+          loaders: fabric
+
+          java: 17
+
+          dependencies: |
+          fabric-api | depends | 0.46.0
+          kirin | includes | 1.10.0-beta.2
+          modmenu | recommends | *
+
+
+          version-resolver: latest # Defaults to selecting the latest compatible version of Minecraft, using the tag from the fabric.mod.json
