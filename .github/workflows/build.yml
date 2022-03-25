@@ -27,6 +27,12 @@ jobs:
         run: ref="${GITHUB_REF#refs/heads/}" && echo "::set-output name=branch::${ref////-}"
         id: ref
 
+      - name: Set outputs
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      - name: Check outputs
+        run: echo ${{ steps.vars.outputs.sha_short }}
+
       - name: Validate gradle wrapper
         uses: gradle/wrapper-validation-action@v1
 
@@ -46,5 +52,5 @@ jobs:
         if: ${{ runner.os == 'Linux' && matrix.java == '17' }} # Only upload artifacts built from latest java on one OS
         uses: actions/upload-artifact@v2
         with:
-          name: dust-fabric-${{ github.sha }}
+          name: dust-fabric-${{ steps.vars.outputs.sha_short }}
           path: build/libs/*[0-9].jar
