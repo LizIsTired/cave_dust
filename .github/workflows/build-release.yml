@@ -52,8 +52,8 @@ jobs:
           java: 17
 
           dependencies: |
-          fabric | depends | 0.46.0
-          kirin | includes | 1.10.0-beta.2
-          modmenu | recommends | *
+           fabric | depends | 0.46.0
+           kirin | includes | 1.10.0-beta.2
+           modmenu | recommends | *
 
           version-resolver: latest # Defaults to selecting the latest compatible version of Minecraft, using the tag from the fabric.mod.json
