@@ -1,4 +1,4 @@
-package net.lizistired.caveDust.utils;
+package net.lizistired.cavedust.utils;
 
 import net.minecraft.client.MinecraftClient;
 

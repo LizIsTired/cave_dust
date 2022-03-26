@@ -4,6 +4,7 @@
   "package": "net.lizistired.cavedust.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
+    "ClientWorldAccessor"
   ],
   "client": [
   ],

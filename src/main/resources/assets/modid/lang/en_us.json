@@ -23,5 +23,22 @@
   "menu.cavedust.reset": "Reset settings",
   "menu.cavedust.reset.tooltip": "Are you sure you want to reset all settings?",
   "menu.cavedust.particlemultiplier": "Particle multiplier: %s",
-  "menu.cavedust.particlemultiplier.tooltip": "Multiplies the amount of particles at any given depth."
+  "menu.cavedust.particlemultiplier.tooltip": "Multiplies the amount of particles at any given depth.",
+  "menu.cavedust.velocityrandomness": "Velocity randomness: %s",
+  "menu.cavedust.velocityrandomness.tooltip": "The randomness of the velocity of the particles.",
+  "menu.cavedust.enhanceddetection.true": "Enhanced detection: Enabled",
+  "menu.cavedust.enhanceddetection.false": "Enhanced detection: Disabled",
+  "menu.cavedust.enhanceddetection.tooltip": "Enhanced detection enables more accurate checks, using the particles position\n               instead of the player, has some performance impact.",
+  "menu.cavedust.superflatstatus.true": "Superflat particles: Enabled",
+  "menu.cavedust.superflatstatus.false": "Superflat particles: Disabled",
+  "menu.cavedust.superflatstatus.tooltip": "Should particles spawn on superflat worlds?",
+
+  "key.cavedust.reload": "Reload Config",
+  "key.cavedust.toggle": "Toggle Particles",
+  "category.cavedust.spook": "Cave Dust",
+
+  "debug.cavedust.toggle.true": "(Cave Dust) Enabled particles",
+  "debug.cavedust.toggle.false": "(Cave Dust) Disabled particles",
+  "debug.cavedust.reload": "(Cave Dust) Reloaded config"
+
 }

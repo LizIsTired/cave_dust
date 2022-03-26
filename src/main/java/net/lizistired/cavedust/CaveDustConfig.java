@@ -6,6 +6,7 @@ import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import static net.lizistired.cavedust.CaveDust.*;
+import static net.lizistired.cavedust.utils.MathHelper.*;
 
 import java.nio.file.Path;
 
@@ -19,13 +20,16 @@ public class CaveDustConfig extends JsonFile {
     private int dimensionMinX = -5;
     private int dimensionMinY = -5;
     private int dimensionMinZ = -5;
+    private int velocityRandomness = 1;
 
     private boolean caveDustEnabled = true;
     private String particleName = "white_ash";
     private boolean seaLevelCheck = true;
+    private boolean superFlatStatus = false;
+    //private boolean enhancedDetection = true;
     private float upperLimit = 64;
     private float lowerLimit = -64;
-    private float particleMultiplier = 1;
+    private int particleMultiplier = 1;
 
     public CaveDustConfig(Path file, CaveDust caveDust) {
         super(file);
@@ -136,12 +140,12 @@ public class CaveDustConfig extends JsonFile {
         return lowerLimit;
     }
 
-    public float getParticleMultiplier(){
+    public int getParticleMultiplier(){
         return particleMultiplier;
     }
 
     public float setParticleMultiplier(float particleMultiplier){
-        this.particleMultiplier = particleMultiplier;
+        this.particleMultiplier = (int) particleMultiplier;
         save();
         return getParticleMultiplier();
     }
@@ -182,6 +186,41 @@ public class CaveDustConfig extends JsonFile {
         save();
         return getSeaLevelCheck();
     }
+
+    public float getVelocityRandomnessRandom(){
+        if (velocityRandomness == 0) {return 0;}
+        return (float) generateRandomDouble(-velocityRandomness, velocityRandomness);
+    }
+
+    public float getVelocityRandomness(){
+        return velocityRandomness;
+    }
+
+    public float setVelocityRandomness(float velocityRandomness){
+        this.velocityRandomness = (int) velocityRandomness;
+        save();
+        return getVelocityRandomness();
+    }
+
+    public boolean getSuperFlatStatus(){
+        return superFlatStatus;
+    }
+
+    public boolean setSuperFlatStatus(){
+        superFlatStatus = !superFlatStatus;
+        save();
+        return getSuperFlatStatus();
+    }
+
+    /*public boolean getEnhancedDetection(){
+        return enhancedDetection;
+    }
+
+    public boolean setEnhancedDetection(){
+        enhancedDetection = !enhancedDetection;
+        save();
+        return getEnhancedDetection();
+    }*/
 
     public void resetConfig(){
         dimensionMinX = -5;

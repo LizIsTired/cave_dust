@@ -9,8 +9,8 @@ import net.minecraft.text.TranslatableText;
 
 import javax.annotation.Nullable;
 
-public class ModMenuScreen extends GameGui {
-    public ModMenuScreen(@Nullable Screen parent) {
+public class ModMenuConfigScreen extends GameGui {
+    public ModMenuConfigScreen(@Nullable Screen parent) {
         super(new TranslatableText("menu.cavedust.title"), parent);
     }
 
@@ -31,6 +31,18 @@ public class ModMenuScreen extends GameGui {
         })).getStyle()
                 .setText("menu.cavedust.global." + config.getCaveDustEnabled())
                 .setTooltip(new TranslatableText("menu.cavedust.global.tooltip." + config.getCaveDustEnabled()));
+
+        /*addButton(new Button(left, row += 24).onClick(sender -> {
+            sender.getStyle().setText("menu.cavedust.enhanceddetection." + config.setEnhancedDetection()).setTooltip(new TranslatableText("menu.cavedust.enhanceddetection.tooltip"));
+        })).getStyle()
+                .setText("menu.cavedust.enhanceddetection." + config.getEnhancedDetection())
+                .setTooltip(new TranslatableText("menu.cavedust.enhanceddetection.tooltip"));*/
+
+        addButton(new Button(left, row += 24).onClick(sender -> {
+            sender.getStyle().setText("menu.cavedust.superflatstatus." + config.setSuperFlatStatus()).setTooltip(new TranslatableText("menu.cavedust.superflatstatus.tooltip"));
+        })).getStyle()
+                .setText("menu.cavedust.superflatstatus." + config.getSuperFlatStatus())
+                .setTooltip(new TranslatableText("menu.cavedust.superflatstatus.tooltip"));
 
         addButton(new Slider(left += -110, row += 24, -50, 0, config.getDimensionsMinX()))
                 .onChange(config::setDimensionsMinX)
@@ -72,10 +84,15 @@ public class ModMenuScreen extends GameGui {
                 .setTextFormat(transText::formatLowerLimit)
                 .getStyle().setTooltip(new TranslatableText("menu.cavedust.lowerlimit.tooltip"));
 
-        addButton(new Slider(left, row += 24, 0, 10, config.getParticleMultiplier()))
+        addButton(new Slider(left, row += 24, 1, 100, config.getParticleMultiplier()))
                 .onChange(config::setParticleMultiplier)
                 .setTextFormat(transText::formatParticleMultiplier)
                 .getStyle().setTooltip(new TranslatableText("menu.cavedust.particlemultiplier.tooltip"));
+
+        addButton(new Slider(left, row += 24, 0, 10, config.getVelocityRandomness()))
+                .onChange(config::setVelocityRandomness)
+                .setTextFormat(transText::formatVelocityRandomness)
+                .getStyle().setTooltip(new TranslatableText("menu.cavedust.velocityrandomness.tooltip"));
 
 
         addButton(new Button(left, row += 24).onClick(sender -> {
@@ -83,7 +100,7 @@ public class ModMenuScreen extends GameGui {
             finish();
         })).getStyle().setText(new TranslatableText("menu.cavedust.reset")).setTooltip(new TranslatableText("menu.cavedust.reset.tooltip"));
 
-        addButton(new Button(left, row += 180)
+        addButton(new Button(left, row += 60)
                 .onClick(sender -> finish())).getStyle()
                 .setText("gui.done");
     }
