@@ -29,7 +29,7 @@ public class ParticleSpawnUtil {
                 || client.world == null
                 || !client.world.getDimension().isBedWorking()
                 || Objects.requireNonNull(client.player).isSubmergedInWater()
-                || Objects.equals(client.world.getBiomeKey(Objects.requireNonNull(client.player.getBlockPos())), Optional.of(LUSH_CAVES)))
+                || client.world.getBiome(Objects.requireNonNull(client.player.getBlockPos())).matchesKey(LUSH_CAVES))
         {
             timer = 0;
             shouldParticlesSpawn = false;
@@ -68,7 +68,8 @@ public class ParticleSpawnUtil {
                 || client.world == null
                 || !client.world.getDimension().isBedWorking()
                 || Objects.requireNonNull(client.player).isSubmergedInWater()
-                || Objects.equals(client.world.getBiomeKey(Objects.requireNonNull(pos)), Optional.of(LUSH_CAVES)))
+                || client.world.getBiome(Objects.requireNonNull(pos)).matchesKey(LUSH_CAVES))
+
         {
             timer = 0;
             shouldParticlesSpawn = false;
