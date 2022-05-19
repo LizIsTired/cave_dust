@@ -1,10 +1,8 @@
 package net.lizistired.cavedust;
 
 //minecraft imports
-import net.lizistired.cavedust.mixin.ClientWorldAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -15,6 +13,7 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //java imports
+import java.awt.*;
 import java.nio.file.Path;
 //static imports
 import static net.lizistired.cavedust.utils.MathHelper.*;
@@ -25,7 +24,7 @@ import static net.lizistired.cavedust.utils.KeybindingHelper.*;
 
 public class CaveDust implements ClientModInitializer {
 	//logger
-	public static final Logger LOGGER = LoggerFactory.getLogger("caveDust");
+	public static final Logger LOGGER = LoggerFactory.getLogger("cavedust");
 	//make class static
 	private static CaveDust instance;
 	public static CaveDust getInstance() {
@@ -57,12 +56,12 @@ public class CaveDust implements ClientModInitializer {
 		if (keyBinding1.wasPressed()){
 			getConfig().toggleCaveDust();
 			LOGGER.info("Toggled dust");
-			client.player.sendSystemMessage(new TranslatableText("debug.cavedust.toggle." + config.getCaveDustEnabled()), Util.NIL_UUID);
+			client.player.sendMessage(Text.translatable("debug.cavedust.toggle." + config.getCaveDustEnabled()), false);
 		}
 		if (keyBinding2.wasPressed()){
 			getConfig().load();
 			LOGGER.info("Reloaded config");
-			client.player.sendSystemMessage(new TranslatableText("debug.cavedust.reload"), Util.NIL_UUID);
+			client.player.sendMessage(Text.translatable("debug.cavedust.reload"), false);
 		}
 
 		//ensure world is not null

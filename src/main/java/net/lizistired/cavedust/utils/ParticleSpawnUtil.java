@@ -27,7 +27,7 @@ public class ParticleSpawnUtil {
         if (!config.getCaveDustEnabled()
                 || client.isPaused()
                 || client.world == null
-                || !client.world.getDimension().isBedWorking()
+                || !client.world.getDimension().bedWorks()
                 || Objects.requireNonNull(client.player).isSubmergedInWater()
                 || client.world.getBiome(Objects.requireNonNull(client.player.getBlockPos())).matchesKey(LUSH_CAVES))
         {
@@ -66,7 +66,7 @@ public class ParticleSpawnUtil {
         if (!config.getCaveDustEnabled()
                 || client.isPaused()
                 || client.world == null
-                || !client.world.getDimension().isBedWorking()
+                || !client.world.getDimension().bedWorks()
                 || Objects.requireNonNull(client.player).isSubmergedInWater()
                 || client.world.getBiome(Objects.requireNonNull(pos)).matchesKey(LUSH_CAVES))
 
