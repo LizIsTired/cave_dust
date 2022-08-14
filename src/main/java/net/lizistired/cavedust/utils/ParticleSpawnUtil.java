@@ -7,7 +7,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import static net.minecraft.world.biome.BiomeKeys.LUSH_CAVES;
 

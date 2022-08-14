@@ -3,7 +3,6 @@ package net.lizistired.cavedust;
 //minecraft imports
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
-import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 //other imports
@@ -13,7 +12,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //java imports
-import java.awt.*;
 import java.nio.file.Path;
 //static imports
 import static net.lizistired.cavedust.utils.MathHelper.*;
@@ -34,8 +32,8 @@ public class CaveDust implements ClientModInitializer {
 		instance = this;
 	}
 	//config assignment
-	private static CaveDustConfig config;
-	public CaveDustConfig getConfig() {
+	private static net.lizistired.cavedust.CaveDustConfig config;
+	public net.lizistired.cavedust.CaveDustConfig getConfig() {
 		return config;
 	}
 

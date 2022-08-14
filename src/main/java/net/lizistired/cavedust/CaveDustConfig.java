@@ -11,7 +11,7 @@ import static net.lizistired.cavedust.utils.MathHelper.*;
 import java.nio.file.Path;
 
 public class CaveDustConfig extends JsonFile {
-    private transient final CaveDust CaveDust;
+    private transient final net.lizistired.cavedust.CaveDust CaveDust;
 
 
     private int dimensionMaxX = 5;
@@ -31,7 +31,7 @@ public class CaveDustConfig extends JsonFile {
     private float lowerLimit = -64;
     private int particleMultiplier = 1;
 
-    public CaveDustConfig(Path file, CaveDust caveDust) {
+    public CaveDustConfig(Path file, net.lizistired.cavedust.CaveDust caveDust) {
         super(file);
         this.CaveDust = caveDust;
     }
