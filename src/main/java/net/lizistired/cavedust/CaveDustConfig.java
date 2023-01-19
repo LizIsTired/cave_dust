@@ -3,8 +3,8 @@ package net.lizistired.cavedust;
 import net.lizistired.cavedust.utils.JsonFile;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import static net.lizistired.cavedust.CaveDust.*;
 import static net.lizistired.cavedust.utils.MathHelper.*;
 
@@ -168,7 +168,7 @@ public class CaveDustConfig extends JsonFile {
 
     public ParticleEffect getParticle(){
         try {
-            return (ParticleEffect) Registry.PARTICLE_TYPE.get(new Identifier(particleName.toLowerCase()));
+            return (ParticleEffect) Registries.PARTICLE_TYPE.get(new Identifier(particleName.toLowerCase()));
         } catch (ClassCastException e) {
             LOGGER.error(e + "\nThere was an error loading the specified particle from the config, make sure a valid particle name is specified. Falling back to \"minecraft:white_ash\".");
             particleName = "minecraft:white_ash";

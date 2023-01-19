@@ -6,8 +6,7 @@ import net.lizistired.cavedust.utils.TranslatableTextHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class ModMenuConfigScreen extends GameGui {
     public ModMenuConfigScreen(@Nullable Screen parent) {
