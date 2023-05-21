@@ -43,37 +43,23 @@ public class ModMenuConfigScreen extends GameGui {
                 .setText("menu.cavedust.superflatstatus." + config.getSuperFlatStatus())
                 .setTooltip(Text.translatable("menu.cavedust.superflatstatus.tooltip"));
 
-        addButton(new Slider(left += -110, row += 24, -50, 0, config.getDimensionsMinX()))
-                .onChange(config::setDimensionsMinX)
-                .setTextFormat(transText::formatMinX)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.minX.tooltip"));
 
-        addButton(new Slider(left, row += 24, -50, 0, config.getDimensionsMinY()))
-                .onChange(config::setDimensionsMinY)
-                .setTextFormat(transText::formatMinY)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.minY.tooltip"));
-
-        addButton(new Slider(left, row += 24, -50, 0, config.getDimensionsMinZ()))
-                .onChange(config::setDimensionsMinZ)
-                .setTextFormat(transText::formatMinZ)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.minZ.tooltip"));
-
-        addButton(new Slider(left += 220, row += -48, 0, 50, config.getDimensionsMaxX()))
-                .onChange(config::setDimensionsMaxX)
+        addButton(new Slider(left, row += 48, 0, 50, config.getDimensionsX()))
+                .onChange(config::setDimensionsX)
                 .setTextFormat(transText::formatMaxX)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.maxX.tooltip"));
+                .getStyle().setTooltip(Text.translatable("menu.cavedust.X.tooltip"));
 
-        addButton(new Slider(left, row += 24, 0, 50, config.getDimensionsMaxY()))
-                .onChange(config::setDimensionsMaxY)
+        addButton(new Slider(left, row += 24, 0, 50, config.getDimensionsY()))
+                .onChange(config::setDimensionsY)
                 .setTextFormat(transText::formatMaxY)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.maxY.tooltip"));
+                .getStyle().setTooltip(Text.translatable("menu.cavedust.Y.tooltip"));
 
-        addButton(new Slider(left, row += 24, 0, 50, config.getDimensionsMaxZ()))
-                .onChange(config::setDimensionsMaxZ)
+        addButton(new Slider(left, row += 24, 0, 50, config.getDimensionsZ()))
+                .onChange(config::setDimensionsZ)
                 .setTextFormat(transText::formatMaxZ)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.maxZ.tooltip"));
+                .getStyle().setTooltip(Text.translatable("menu.cavedust.Z.tooltip"));
 
-        addButton(new Slider(left += -110, row += 24, -64, 319, config.getUpperLimit()))
+        addButton(new Slider(left, row += 24, -64, 319, config.getUpperLimit()))
                 .onChange(config::setUpperLimit)
                 .setTextFormat(transText::formatUpperLimit)
                 .getStyle().setTooltip(Text.translatable("menu.cavedust.upperlimit.tooltip"));
@@ -93,7 +79,6 @@ public class ModMenuConfigScreen extends GameGui {
                 .setTextFormat(transText::formatVelocityRandomness)
                 .getStyle().setTooltip(Text.translatable("menu.cavedust.velocityrandomness.tooltip"));
 
-
         addButton(new Button(left, row += 24).onClick(sender -> {
             config.resetConfig();
             finish();
@@ -102,6 +87,7 @@ public class ModMenuConfigScreen extends GameGui {
         addButton(new Button(left, row += 60)
                 .onClick(sender -> finish())).getStyle()
                 .setText("gui.done");
+
     }
 
 

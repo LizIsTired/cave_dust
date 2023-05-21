@@ -36,76 +36,40 @@ public class CaveDustConfig extends JsonFile {
         this.CaveDust = caveDust;
     }
 
-    public float setDimensionsMinX(float size){
+    public float setDimensionsX(float size){
         if (this.dimensionMinX != size) {
             this.dimensionMinX = (int)size;
             save();
         }
-        return getDimensionsMinX();
+        return getDimensionsX();
     }
 
-    public float setDimensionsMinY(float size){
+    public float setDimensionsY(float size){
         if (this.dimensionMinY != size) {
             this.dimensionMinY = (int)size;
             save();
         }
-        return getDimensionsMinY();
+        return getDimensionsY();
     }
 
-    public float setDimensionsMinZ(float size){
+    public float setDimensionsZ(float size){
         if (this.dimensionMinZ != size) {
             this.dimensionMinZ = (int)size;
             save();
         }
-        return getDimensionsMinZ();
+        return getDimensionsZ();
     }
 
-    public float getDimensionsMinX(){
+    public float getDimensionsX(){
         return dimensionMinX;
     }
 
-    public float getDimensionsMinY(){
+    public float getDimensionsY(){
         return dimensionMinY;
     }
 
-    public float getDimensionsMinZ(){
+    public float getDimensionsZ(){
         return dimensionMinZ;
-    }
-
-    public float setDimensionsMaxX(float size){
-        if (this.dimensionMaxX != size) {
-            this.dimensionMaxX = (int)size;
-            save();
-        }
-        return getDimensionsMaxX();
-    }
-
-    public float setDimensionsMaxY(float size){
-        if (this.dimensionMaxY != size) {
-            this.dimensionMaxY = (int)size;
-            save();
-        }
-        return getDimensionsMaxY();
-    }
-
-    public float setDimensionsMaxZ(float size){
-        if (this.dimensionMaxZ != size) {
-            this.dimensionMaxZ = (int)size;
-            save();
-        }
-        return getDimensionsMaxZ();
-    }
-
-    public float getDimensionsMaxX(){
-        return dimensionMaxX;
-    }
-
-    public float getDimensionsMaxY(){
-        return dimensionMaxY;
-    }
-
-    public float getDimensionsMaxZ(){
-        return dimensionMaxZ;
     }
 
     public float setUpperLimit(float upperLimit){

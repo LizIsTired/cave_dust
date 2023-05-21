@@ -2,6 +2,7 @@ package net.lizistired.cavedust;
 
 //minecraft imports
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -71,9 +72,9 @@ public class CaveDust implements ClientModInitializer {
 
 		for (int i = 0; i < probabilityNormalized * config.getParticleMultiplier() * 10; i++) {
 			try {
-				double x = client.player.getPos().getX() + generateRandomDouble(config.getDimensionsMinX(), config.getDimensionsMaxX());
-				double y = client.player.getPos().getY() + generateRandomDouble(config.getDimensionsMinX(), config.getDimensionsMaxY());
-				double z = client.player.getPos().getZ() + generateRandomDouble(config.getDimensionsMinX(), config.getDimensionsMaxZ());
+				double x = client.player.getPos().getX() + generateRandomDouble(-config.getDimensionsX(), config.getDimensionsX());
+				double y = client.player.getPos().getY() + generateRandomDouble(-config.getDimensionsY(), config.getDimensionsY());
+				double z = client.player.getPos().getZ() + generateRandomDouble(-config.getDimensionsZ(), config.getDimensionsZ());
 				BlockPos particlePos = new BlockPos(x, y, z);
 
 				if (!shouldParticlesSpawn(client, config, particlePos)){return;}
