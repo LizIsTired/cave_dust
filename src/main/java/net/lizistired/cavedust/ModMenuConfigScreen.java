@@ -46,17 +46,17 @@ public class ModMenuConfigScreen extends GameGui {
                 .setTooltip(Text.translatable("menu.cavedust.superflatstatus.tooltip"));
 
 
-        addButton(new Slider(left, row += 48, 0, 50, config.getDimensionsX()))
+        addButton(new Slider(left, row += 48, 1, 50, config.getDimensionsX()))
                 .onChange(config::setDimensionsX)
                 .setTextFormat(transText::formatMaxX)
                 .getStyle().setTooltip(Text.translatable("menu.cavedust.X.tooltip"));
 
-        addButton(new Slider(left, row += 24, 0, 50, config.getDimensionsY()))
+        addButton(new Slider(left, row += 24, 1, 50, config.getDimensionsY()))
                 .onChange(config::setDimensionsY)
                 .setTextFormat(transText::formatMaxY)
                 .getStyle().setTooltip(Text.translatable("menu.cavedust.Y.tooltip"));
 
-        addButton(new Slider(left, row += 24, 0, 50, config.getDimensionsZ()))
+        addButton(new Slider(left, row += 24, 1, 50, config.getDimensionsZ()))
                 .onChange(config::setDimensionsZ)
                 .setTextFormat(transText::formatMaxZ)
                 .getStyle().setTooltip(Text.translatable("menu.cavedust.Z.tooltip"));
