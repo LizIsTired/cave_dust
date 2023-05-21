@@ -26,7 +26,7 @@ public class CaveDustConfig extends JsonFile {
     private float lowerLimit = -64;
     private int particleMultiplier = 1;
 
-    private int particleID = 79;
+    private int particleID = WHITE_ASH_ID;
 
     public CaveDustConfig(Path file, net.lizistired.cavedust.CaveDust caveDust) {
         super(file);
@@ -183,7 +183,7 @@ public class CaveDustConfig extends JsonFile {
 
     public int getParticleID(){
         if ((!Registries.PARTICLE_TYPE.getEntry(particleID).isPresent())) {
-            setParticleID(79);
+            setParticleID(WHITE_ASH_ID);
         }
         return particleID;
     }
@@ -200,7 +200,7 @@ public class CaveDustConfig extends JsonFile {
 
         seaLevelCheck = true;
         caveDustEnabled = true;
-        particleID = 79;
+        particleID = WHITE_ASH_ID;
         save();
     }
 }

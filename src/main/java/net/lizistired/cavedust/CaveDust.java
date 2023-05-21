@@ -2,6 +2,7 @@ package net.lizistired.cavedust;
 
 //minecraft imports
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
@@ -37,6 +38,8 @@ public class CaveDust implements ClientModInitializer {
 	public net.lizistired.cavedust.CaveDustConfig getConfig() {
 		return config;
 	}
+
+	public static int WHITE_ASH_ID = Registries.PARTICLE_TYPE.getRawId(ParticleTypes.WHITE_ASH);
 
 
 	@Override
@@ -84,7 +87,7 @@ public class CaveDust implements ClientModInitializer {
 			}
 			catch (NullPointerException e) {
 				LOGGER.error(String.valueOf(e));
-				getConfig().setParticleID(79);
+				getConfig().setParticleID(WHITE_ASH_ID);
 			}
 		}
 	}
