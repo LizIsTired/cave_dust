@@ -84,7 +84,7 @@ public class CaveDust implements ClientModInitializer {
 			}
 			catch (NullPointerException e) {
 				LOGGER.error(String.valueOf(e));
-				getConfig().setParticle("minecraft:white_ash");
+				getConfig().setParticleID(79);
 			}
 		}
 	}

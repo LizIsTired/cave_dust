@@ -176,7 +176,15 @@ public class CaveDustConfig extends JsonFile {
         }
     }
 
+    public void setParticleID(int particleID){
+        this.particleID = particleID;
+        save();
+    }
+
     public int getParticleID(){
+        if ((!Registries.PARTICLE_TYPE.getEntry(particleID).isPresent())) {
+            setParticleID(79);
+        }
         return particleID;
     }
 
