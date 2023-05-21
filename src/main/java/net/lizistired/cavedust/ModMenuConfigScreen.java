@@ -84,7 +84,7 @@ public class ModMenuConfigScreen extends GameGui {
                 .setTextFormat(transText::formatLowerLimit)
                 .getStyle().setTooltip(Text.translatable("menu.cavedust.lowerlimit.tooltip"));
 
-        addButton(new Slider(left, row += 24, 1, 100, config.getParticleMultiplier()))
+        addButton(new Slider(left, row += 24, 1, 2000, config.getParticleMultiplier()))
                 .onChange(config::setParticleMultiplier)
                 .setTextFormat(transText::formatParticleMultiplier)
                 .getStyle().setTooltip(Text.translatable("menu.cavedust.particlemultiplier.tooltip"));
