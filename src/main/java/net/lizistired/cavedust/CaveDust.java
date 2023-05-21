@@ -69,7 +69,7 @@ public class CaveDust implements ClientModInitializer {
 		// )
 		double probabilityNormalized = normalize(config.getLowerLimit(), config.getUpperLimit(), client.player.getBlockY());
 
-		for (int i = 0; i < probabilityNormalized * config.getParticleMultiplier() * 10; i++) {
+		for (int i = 0; i < probabilityNormalized * config.getParticleMultiplier(); i++) {
 			try {
 				double x = client.player.getPos().getX() + generateRandomDouble(config.getDimensionsMinX(), config.getDimensionsMaxX());
 				double y = client.player.getPos().getY() + generateRandomDouble(config.getDimensionsMinX(), config.getDimensionsMaxY());
