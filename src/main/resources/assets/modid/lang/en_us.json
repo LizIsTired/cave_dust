@@ -26,6 +26,8 @@
   "menu.cavedust.superflatstatus.true": "Superflat particles: Enabled",
   "menu.cavedust.superflatstatus.false": "Superflat particles: Disabled",
   "menu.cavedust.superflatstatus.tooltip": "Should particles spawn on superflat worlds?",
+  "menu.cavedust.particle": "Particle: ",
+  "menu.cavedust.particle.tooltip": "Particle to spawn. Click to cycle.",
 
   "key.cavedust.reload": "Reload Config",
   "key.cavedust.toggle": "Toggle Particles",

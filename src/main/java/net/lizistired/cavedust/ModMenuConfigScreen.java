@@ -5,6 +5,8 @@ import com.minelittlepony.common.client.gui.element.*;
 import net.lizistired.cavedust.utils.TranslatableTextHelper;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.registry.Registries;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,6 +81,12 @@ public class ModMenuConfigScreen extends GameGui {
                 .setTextFormat(transText::formatVelocityRandomness)
                 .getStyle().setTooltip(Text.translatable("menu.cavedust.velocityrandomness.tooltip"));
 
+        addButton(new Button(left, row += 24).onClick(sender ->{
+            config.iterateParticle();
+            sender.getStyle().setText("Particle: " + (getNameOfParticle()));
+        })).getStyle().setText("Particle: " + (getNameOfParticle()))
+                .setTooltip(Text.translatable("menu.cavedust.particle.tooltip"));
+
         addButton(new Button(left, row += 24).onClick(sender -> {
             config.resetConfig();
             finish();
@@ -95,5 +103,10 @@ public class ModMenuConfigScreen extends GameGui {
     public void render(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
         renderBackground(matrices);
         super.render(matrices, mouseX, mouseY, partialTicks);
+    }
+    private String getNameOfParticle(){
+        CaveDustConfig config = CaveDust.getInstance().getConfig();
+        config.load();
+        return Registries.PARTICLE_TYPE.getEntry(config.getParticleID()).get().getKey().get().getValue().toString();
     }
 }

@@ -14,22 +14,19 @@ public class CaveDustConfig extends JsonFile {
     private transient final net.lizistired.cavedust.CaveDust CaveDust;
 
 
-    private int dimensionMaxX = 5;
-    private int dimensionMaxY = 5;
-    private int dimensionMaxZ = 5;
-    private int dimensionMinX = -5;
-    private int dimensionMinY = -5;
-    private int dimensionMinZ = -5;
+    private int dimensionX = 5;
+    private int dimensionY = 5;
+    private int dimensionZ = 5;
     private int velocityRandomness = 1;
 
     private boolean caveDustEnabled = true;
-    private String particleName = "white_ash";
     private boolean seaLevelCheck = true;
     private boolean superFlatStatus = false;
-    //private boolean enhancedDetection = true;
     private float upperLimit = 64;
     private float lowerLimit = -64;
     private int particleMultiplier = 1;
+
+    private int particleID = 79;
 
     public CaveDustConfig(Path file, net.lizistired.cavedust.CaveDust caveDust) {
         super(file);
@@ -37,39 +34,39 @@ public class CaveDustConfig extends JsonFile {
     }
 
     public float setDimensionsX(float size){
-        if (this.dimensionMinX != size) {
-            this.dimensionMinX = (int)size;
+        if (this.dimensionX != size) {
+            this.dimensionX = (int)size;
             save();
         }
         return getDimensionsX();
     }
 
     public float setDimensionsY(float size){
-        if (this.dimensionMinY != size) {
-            this.dimensionMinY = (int)size;
+        if (this.dimensionY != size) {
+            this.dimensionY = (int)size;
             save();
         }
         return getDimensionsY();
     }
 
     public float setDimensionsZ(float size){
-        if (this.dimensionMinZ != size) {
-            this.dimensionMinZ = (int)size;
+        if (this.dimensionZ != size) {
+            this.dimensionZ = (int)size;
             save();
         }
         return getDimensionsZ();
     }
 
     public float getDimensionsX(){
-        return dimensionMinX;
+        return dimensionX;
     }
 
     public float getDimensionsY(){
-        return dimensionMinY;
+        return dimensionY;
     }
 
     public float getDimensionsZ(){
-        return dimensionMinZ;
+        return dimensionZ;
     }
 
     public float setUpperLimit(float upperLimit){
@@ -125,20 +122,13 @@ public class CaveDustConfig extends JsonFile {
     }
 
     public ParticleEffect setParticle(String particleType){
-        particleName = particleType;
+        //particleName = particleType;
         save();
         return getParticle();
     }
 
     public ParticleEffect getParticle(){
-        try {
-            return (ParticleEffect) Registries.PARTICLE_TYPE.get(new Identifier(particleName.toLowerCase()));
-        } catch (ClassCastException e) {
-            LOGGER.error(e + "\nThere was an error loading the specified particle from the config, make sure a valid particle name is specified. Falling back to \"minecraft:white_ash\".");
-            particleName = "minecraft:white_ash";
-            save();
-            return ParticleTypes.WHITE_ASH;
-        }
+        return (ParticleEffect) Registries.PARTICLE_TYPE.get(new Identifier(Registries.PARTICLE_TYPE.getEntry(getParticleID()).get().getKey().get().getValue().toString().toLowerCase()));
     }
 
     public boolean getSeaLevelCheck() {
@@ -176,24 +166,24 @@ public class CaveDustConfig extends JsonFile {
         return getSuperFlatStatus();
     }
 
-    /*public boolean getEnhancedDetection(){
-        return enhancedDetection;
+    public void iterateParticle(){
+        if(getParticleID() > Registries.PARTICLE_TYPE.size() - 2) {
+            particleID = 1;
+            save();
+        } else {
+            particleID = getParticleID() + 1;
+            save();
+        }
     }
 
-    public boolean setEnhancedDetection(){
-        enhancedDetection = !enhancedDetection;
-        save();
-        return getEnhancedDetection();
-    }*/
+    public int getParticleID(){
+        return particleID;
+    }
 
     public void resetConfig(){
-        dimensionMinX = -5;
-        dimensionMinY = -5;
-        dimensionMinZ = -5;
-
-        dimensionMaxX = 5;
-        dimensionMaxY = 5;
-        dimensionMaxZ = 5;
+        dimensionX = 5;
+        dimensionY = 5;
+        dimensionZ = 5;
 
         upperLimit = 64;
         lowerLimit = -64;
@@ -202,7 +192,7 @@ public class CaveDustConfig extends JsonFile {
 
         seaLevelCheck = true;
         caveDustEnabled = true;
-        particleName = "minecraft:white_ash";
+        particleID = 79;
         save();
     }
 }

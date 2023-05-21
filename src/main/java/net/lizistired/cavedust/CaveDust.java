@@ -72,9 +72,9 @@ public class CaveDust implements ClientModInitializer {
 
 		for (int i = 0; i < probabilityNormalized * config.getParticleMultiplier() * 10; i++) {
 			try {
-				double x = client.player.getPos().getX() + generateRandomDouble(-config.getDimensionsX(), config.getDimensionsX());
-				double y = client.player.getPos().getY() + generateRandomDouble(-config.getDimensionsY(), config.getDimensionsY());
-				double z = client.player.getPos().getZ() + generateRandomDouble(-config.getDimensionsZ(), config.getDimensionsZ());
+				double x = client.player.getPos().getX() + generateRandomDouble(config.getDimensionsX() * -1, config.getDimensionsX());
+				double y = client.player.getPos().getY() + generateRandomDouble(config.getDimensionsY() * -1, config.getDimensionsY());
+				double z = client.player.getPos().getZ() + generateRandomDouble(config.getDimensionsZ() * -1, config.getDimensionsZ());
 				BlockPos particlePos = new BlockPos(x, y, z);
 
 				if (!shouldParticlesSpawn(client, config, particlePos)){return;}
