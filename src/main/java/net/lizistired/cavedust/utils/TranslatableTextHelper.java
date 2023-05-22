@@ -24,6 +24,10 @@ public class TranslatableTextHelper {
     public Text formatParticleMultiplier(AbstractSlider<Float> slider) {
         return Text.translatable("menu.cavedust.particlemultiplier", (int)Math.floor(slider.getValue()));
     }
+
+    public Text formatParticleMultiplierMultiplier(AbstractSlider<Float> slider) {
+        return Text.translatable("menu.cavedust.particlemultipliermultiplier", (int)Math.floor(slider.getValue()));
+    }
     public Text formatVelocityRandomness(AbstractSlider<Float> slider) {
         return Text.translatable("menu.cavedust.velocityrandomness", (int) Math.floor(slider.getValue()));
     }

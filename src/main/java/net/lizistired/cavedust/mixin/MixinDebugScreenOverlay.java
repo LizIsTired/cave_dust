@@ -7,6 +7,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
+
+import static net.lizistired.cavedust.CaveDust.PARTICLE_AMOUNT;
 import static net.lizistired.cavedust.utils.ParticleSpawnUtil.shouldParticlesSpawn;
 
 @Mixin(DebugHud.class)
@@ -16,7 +18,7 @@ public abstract class MixinDebugScreenOverlay {
         List<String> messages = cir.getReturnValue();
 
         messages.add("");
-        messages.add("Should particles spawn: " + shouldParticlesSpawn);
+        messages.add("Particle amount evaluated: " + PARTICLE_AMOUNT);
         messages.add("");
     }
 }
