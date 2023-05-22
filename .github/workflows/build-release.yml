@@ -40,5 +40,3 @@ jobs:
 
           curseforge-id: 594750
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
-
-          github-token: ${{ secrets.GITHUB_TOKEN }}
