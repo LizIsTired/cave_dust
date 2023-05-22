@@ -66,7 +66,7 @@ public class ParticleSpawnUtil {
                 || client.isPaused()
                 || client.world == null
                 || !client.world.getDimension().bedWorks()
-                || Objects.requireNonNull(client.player).isSubmergedInWater()
+                || (client.world.getBottomY() > pos.getY())
                 || client.world.getBiome(Objects.requireNonNull(pos)).matchesKey(LUSH_CAVES))
 
         {

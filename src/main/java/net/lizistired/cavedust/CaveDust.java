@@ -1,6 +1,7 @@
 package net.lizistired.cavedust;
 
 //minecraft imports
+import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
@@ -40,6 +41,7 @@ public class CaveDust implements ClientModInitializer {
 	}
 
 	public static int WHITE_ASH_ID = Registries.PARTICLE_TYPE.getRawId(ParticleTypes.WHITE_ASH);
+	public static int PARTICLE_AMOUNT = 0;
 
 
 	@Override
@@ -72,18 +74,20 @@ public class CaveDust implements ClientModInitializer {
 		//LOGGER.info(String.valueOf(((ClientWorldAccessor) client.world.getLevelProperties()).getFlatWorld()));
 		// )
 		double probabilityNormalized = normalize(config.getLowerLimit(), config.getUpperLimit(), client.player.getBlockY());
+		PARTICLE_AMOUNT = (int) (probabilityNormalized * config.getParticleMultiplier() * config.getParticleMultiplierMultiplier());
 
-		for (int i = 0; i < probabilityNormalized * config.getParticleMultiplier() * 10; i++) {
+		for (int i = 0; i < PARTICLE_AMOUNT; i++) {
 			try {
 				int x = (int) (client.player.getPos().getX() + (int) generateRandomDouble(config.getDimensionsX() * -1, config.getDimensionsX()));
 				int y = (int) (client.player.getPos().getY() + (int) generateRandomDouble(config.getDimensionsY() * -1, config.getDimensionsY()));
 				int z = (int) (client.player.getPos().getZ() + (int) generateRandomDouble(config.getDimensionsZ() * -1, config.getDimensionsZ()));
 				BlockPos particlePos = new BlockPos(x, y, z);
 
-				if (!shouldParticlesSpawn(client, config, particlePos)){return;}
-
-
-				world.addParticle(config.getParticle(), x, y, z, config.getVelocityRandomnessRandom(), config.getVelocityRandomnessRandom(), config.getVelocityRandomnessRandom());
+				if (shouldParticlesSpawn(client, config, particlePos)) {
+					if (client.world.getBlockState(particlePos).isAir()) {
+						world.addParticle(config.getParticle(), x, y, z, config.getVelocityRandomnessRandom(), config.getVelocityRandomnessRandom(), config.getVelocityRandomnessRandom());
+					}
+				}
 			}
 			catch (NullPointerException e) {
 				LOGGER.error(String.valueOf(e));

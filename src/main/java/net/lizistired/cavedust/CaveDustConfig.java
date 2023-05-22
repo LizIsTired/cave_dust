@@ -26,6 +26,8 @@ public class CaveDustConfig extends JsonFile {
     private float lowerLimit = -64;
     private int particleMultiplier = 1;
 
+    private int particleMultiplierMultiplier = 10;
+
     private int particleID = WHITE_ASH_ID;
 
     public CaveDustConfig(Path file, net.lizistired.cavedust.CaveDust caveDust) {
@@ -109,6 +111,16 @@ public class CaveDustConfig extends JsonFile {
         this.particleMultiplier = (int) particleMultiplier;
         save();
         return getParticleMultiplier();
+    }
+
+    public int getParticleMultiplierMultiplier(){
+        return particleMultiplierMultiplier;
+    }
+
+    public float setParticleMultiplierMultiplier(float particleMultiplierMultiplier){
+        this.particleMultiplierMultiplier = (int) particleMultiplierMultiplier;
+        save();
+        return getParticleMultiplierMultiplier();
     }
 
     public boolean toggleCaveDust(){
@@ -197,6 +209,7 @@ public class CaveDustConfig extends JsonFile {
         lowerLimit = -64;
 
         particleMultiplier = 1;
+        particleMultiplierMultiplier = 10;
 
         seaLevelCheck = true;
         caveDustEnabled = true;
