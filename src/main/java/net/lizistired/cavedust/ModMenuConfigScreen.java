@@ -27,7 +27,7 @@ public class ModMenuConfigScreen extends GameGui {
         addButton(new Label(width / 2, 30)).setCentered().getStyle()
                 .setText(getTitle());
 
-        addButton(new Button(left, row += -60).onClick(sender -> {
+        addButton(new Button(left += -110, row += -60).onClick(sender -> {
             sender.getStyle().setText("menu.cavedust.global." + config.toggleCaveDust()).setTooltip(Text.translatable("menu.cavedust.global.tooltip." + config.getCaveDustEnabled()));
         })).getStyle()
                 .setText("menu.cavedust.global." + config.getCaveDustEnabled())
@@ -46,7 +46,33 @@ public class ModMenuConfigScreen extends GameGui {
                 .setTooltip(Text.translatable("menu.cavedust.superflatstatus.tooltip"));
 
 
-        addButton(new Slider(left, row += 48, 1, 50, config.getDimensionsX()))
+
+        /*addButton(new Slider(left, row += 48, -64, 319, config.getUpperLimit()))
+                .onChange(config::setUpperLimit)
+                .setTextFormat(transText::formatUpperLimit)
+                .getStyle().setTooltip(Text.translatable("menu.cavedust.upperlimit.tooltip"));
+
+        addButton(new Slider(left, row += 24, -64, 319, config.getLowerLimit()))
+                .onChange(config::setLowerLimit)
+                .setTextFormat(transText::formatLowerLimit)
+                .getStyle().setTooltip(Text.translatable("menu.cavedust.lowerlimit.tooltip"));*/
+
+        addButton(new Slider(left, row += 24, 1, 100, config.getParticleMultiplier()))
+                .onChange(config::setParticleMultiplier)
+                .setTextFormat(transText::formatParticleMultiplier)
+                .getStyle().setTooltip(Text.translatable("menu.cavedust.particlemultiplier.tooltip"));
+
+        addButton(new Slider(left, row += 24, 1, 100, config.getParticleMultiplierMultiplier()))
+                .onChange(config::setParticleMultiplierMultiplier)
+                .setTextFormat(transText::formatParticleMultiplierMultiplier)
+                .getStyle().setTooltip(Text.translatable("menu.cavedust.particlemultipliermultiplier.tooltip"));
+        addButton(new Button(left, row += 24).onClick(sender ->{
+            config.iterateParticle();
+            sender.getStyle().setText("Particle: " + (getNameOfParticle()));
+        })).getStyle().setText("Particle: " + (getNameOfParticle()))
+                .setTooltip(Text.translatable("menu.cavedust.particle.tooltip"));
+
+        addButton(new Slider(left += 220, row -= 96, 1, 50, config.getDimensionsX()))
                 .onChange(config::setDimensionsX)
                 .setTextFormat(transText::formatMaxX)
                 .getStyle().setTooltip(Text.translatable("menu.cavedust.X.tooltip"));
@@ -61,38 +87,18 @@ public class ModMenuConfigScreen extends GameGui {
                 .setTextFormat(transText::formatMaxZ)
                 .getStyle().setTooltip(Text.translatable("menu.cavedust.Z.tooltip"));
 
-        addButton(new Slider(left, row += 24, -64, 319, config.getUpperLimit()))
-                .onChange(config::setUpperLimit)
-                .setTextFormat(transText::formatUpperLimit)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.upperlimit.tooltip"));
-
-        addButton(new Slider(left, row += 24, -64, 319, config.getLowerLimit()))
-                .onChange(config::setLowerLimit)
-                .setTextFormat(transText::formatLowerLimit)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.lowerlimit.tooltip"));
-
-        addButton(new Slider(left, row += 24, 1, 100, config.getParticleMultiplier()))
-                .onChange(config::setParticleMultiplier)
-                .setTextFormat(transText::formatParticleMultiplier)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.particlemultiplier.tooltip"));
-
         addButton(new Slider(left, row += 24, 0, 10, config.getVelocityRandomness()))
                 .onChange(config::setVelocityRandomness)
                 .setTextFormat(transText::formatVelocityRandomness)
                 .getStyle().setTooltip(Text.translatable("menu.cavedust.velocityrandomness.tooltip"));
 
-        addButton(new Button(left, row += 24).onClick(sender ->{
-            config.iterateParticle();
-            sender.getStyle().setText("Particle: " + (getNameOfParticle()));
-        })).getStyle().setText("Particle: " + (getNameOfParticle()))
-                .setTooltip(Text.translatable("menu.cavedust.particle.tooltip"));
 
-        addButton(new Button(left, row += 24).onClick(sender -> {
+        addButton(new Button(left -= 110, row += 60).onClick(sender -> {
             config.resetConfig();
             finish();
         })).getStyle().setText(Text.translatable("menu.cavedust.reset")).setTooltip(Text.translatable("menu.cavedust.reset.tooltip"));
 
-        addButton(new Button(left, row += 60)
+        addButton(new Button(left, row += 24)
                 .onClick(sender -> finish())).getStyle()
                 .setText("gui.done");
 
