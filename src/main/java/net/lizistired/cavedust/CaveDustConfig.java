@@ -1,9 +1,11 @@
 package net.lizistired.cavedust;
 
 import net.lizistired.cavedust.utils.JsonFile;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import static net.lizistired.cavedust.CaveDust.*;
 import static net.lizistired.cavedust.utils.MathHelper.*;
@@ -140,7 +142,14 @@ public class CaveDustConfig extends JsonFile {
     }
 
     public ParticleEffect getParticle(){
-        return (ParticleEffect) Registries.PARTICLE_TYPE.get(new Identifier(Registries.PARTICLE_TYPE.getEntry(getParticleID()).get().getKey().get().getValue().toString().toLowerCase()));
+        try {
+            return (ParticleEffect) Registries.PARTICLE_TYPE.get(new Identifier(Registries.PARTICLE_TYPE.getEntry(getParticleID()).get().getKey().get().getValue().toString().toLowerCase()));
+        } catch (ClassCastException e) {
+            MinecraftClient.getInstance().player.sendMessage(Text.literal("Issue loading particle, defaulting to white ash particle!"), false);
+            setParticleID(WHITE_ASH_ID);
+            save();
+            return ParticleTypes.WHITE_ASH;
+        }
     }
 
     public boolean getSeaLevelCheck() {
