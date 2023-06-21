@@ -3,6 +3,7 @@ package net.lizistired.cavedust;
 import com.minelittlepony.common.client.gui.GameGui;
 import com.minelittlepony.common.client.gui.element.*;
 import net.lizistired.cavedust.utils.TranslatableTextHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.particle.ParticleEffect;
@@ -106,9 +107,9 @@ public class ModMenuConfigScreen extends GameGui {
 
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(matrices);
-        super.render(matrices, mouseX, mouseY, partialTicks);
+    public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(context);
+        super.render(context, mouseX, mouseY, partialTicks);
     }
     private String getNameOfParticle(){
         CaveDustConfig config = CaveDust.getInstance().getConfig();
