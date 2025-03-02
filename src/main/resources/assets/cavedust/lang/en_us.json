@@ -1,4 +1,5 @@
 {
+  "modmenu.descriptionTranslation.cavedust": "Makes dust underground that scales with depth!",
   "menu.cavedust.title": "Cave Dust",
   "menu.cavedust.global.false": "Cave Dust: Disabled",
   "menu.cavedust.global.true": "Cave Dust: Enabled",
