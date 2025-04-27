@@ -93,7 +93,7 @@ public class CaveDust implements ClientModInitializer {
 
 				if (shouldParticlesSpawn(client, config, particlePos)) {
 					if (client.world.getBlockState(particlePos).isAir()) {
-						world.addParticle(getConfig().getParticle(), miniX, miniY, miniZ, config.getVelocityRandomnessRandom() * 0.01, config.getVelocityRandomnessRandom() * 0.01, config.getVelocityRandomnessRandom() * 0.01);
+						world.addParticleClient(getConfig().getParticle(), miniX, miniY, miniZ, config.getVelocityRandomnessRandom() * 0.01, config.getVelocityRandomnessRandom() * 0.01, config.getVelocityRandomnessRandom() * 0.01);
 					}
 				}
 			}
