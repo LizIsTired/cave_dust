@@ -1,13 +1,27 @@
-# Cave Dust
 
-## What...what is "Cave Dust"?
+Installation information
+=======
 
-I'm glad you asked! It's just a mod that adds the white ash particle from the Basalt Deltas biome to the underground to simulate dust! After all, the air wouldn't be 100% clear in a real mineshaft :p
+This template repository can be directly cloned to get you started with a new
+mod. Simply create a new repository cloned from this one, by following the
+instructions at [github](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
 
-Now to the nitty gritty:
-It works by checking if the player has the sky above them while being below sea level and then scales the amount of particles based on depth.
-<br><br>It has a config system that you can access using Mod Menu.
-<br>
-## Dependencies
-Cave Dust requires the [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api) but everything else Cave Dust *needs* is included.
-***HOWEVER***, I recommend [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) to be able to use the config screen :p
+Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+
+> **Note**: For Eclipse, use tasks in `Launch Group` instead of ones founds in `Java Application`. A preparation task must run before launching the game. NeoGradle uses launch groups to do these subsequently.
+
+If at any point you are missing libraries in your IDE, or you've run into problems you can
+run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
+{this does not affect your code} and then start the process again.
+
+Mapping Names:
+============
+By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
+in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
+license. For the latest license text, refer to the mapping file itself, or the reference copy here:
+https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+
+Additional Resources: 
+==========
+Community Documentation: https://docs.neoforged.net/  
+NeoForged Discord: https://discord.neoforged.net/

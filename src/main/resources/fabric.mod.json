@@ -1,46 +1,29 @@
 {
-  "schemaVersion": 1,
-  "id": "cavedust",
-  "version": "${version}",
-  "name": "Cave Dust",
-  "description": "Makes dust underground that scales with depth!",
-  "authors": [
-    "LizIsTired"
-  ],
-  "contact": {
-    "issues": "https://github.com/LizIsTired/dust/issues",
-    "sources": "https://github.com/LizIsTired/dust"
-  },
-  "license": "MPL-2.0",
-  "icon": "assets/cavedust/icon.png",
-  "environment": "*",
-  "entrypoints": {
-    "client": [
-      "net.lizistired.cavedust.CaveDust"
-    ],
-    "main": [
-      "net.lizistired.cavedust.CaveDustServer"],
-    "modmenu": [
-      "net.lizistired.cavedust.CaveDustModMenuFactory"
-    ]
-  },
-  "mixins": [
-    "cavedust.mixins.json"
-  ],
-  "depends": {
-    "fabricloader": ">=0.14.5",
-    "fabric": "*",
-    "minecraft": "1.21.1",
-    "java": ">=17"
-  },
-  "suggests": {
-    "modmenu": ">=3.0.1"
-  },
-  "custom": {
-    "modmenu": {
-      "links": {
-        "modmenu.discord": "https://discord.gg/4m6kQSX6bx"
-      }
-    }
-  }
+	"schemaVersion": 1,
+	"id": "mocookies",
+	"version": "${version}",
+	"name": "Mo' Cookies",
+	"description": "COOKIES!!!",
+	"authors": [ "redderblanket" ],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/BlueBunnex/mocookies"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/mocookies/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main":   [ "com.redderblanket.mocookies.EntrypointMain" ],
+		"client": [ "com.redderblanket.mocookies.EntrypointClient" ]
+	},
+	"mixins": [],
+	"depends": {
+		"fabricloader": ">=0.16.3",
+		"minecraft": "~1.21",
+		"java": ">=21",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
 }
