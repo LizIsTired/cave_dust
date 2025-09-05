@@ -1,5 +1,6 @@
 {
   "menu.cavedust.title": "Cave Dust",
+  "menu.cavedust.title.advanced": "Cave Dust Advanced Options",
   "menu.cavedust.global.false": "Cave Dust: Disabled",
   "menu.cavedust.global.true": "Cave Dust: Enabled",
   "menu.cavedust.global.tooltip.false": "Enable cave dust particles?",
@@ -37,5 +38,6 @@
   "debug.cavedust.toggle.false": "(Cave Dust) Disabled particles",
   "debug.cavedust.reload": "(Cave Dust) Reloaded config",
   "debug.cavedust.particleerror": "(Cave Dust) Error setting particle, skipping to next particle!"
+
 
 }

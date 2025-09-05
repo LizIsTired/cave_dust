@@ -40,7 +40,7 @@ public class CaveDustConfig extends JsonFile {
 
     List<Identifier> list = List.of(Registries.PARTICLE_TYPE.getIds().toArray(new Identifier[0]));
 
-    Identifier newId = Identifier.of("cavedust", "cave_dust");
+    Identifier newId = Identifier.of("cavedust", "cave_dust_mote");
 
     public CaveDustConfig(Path file, net.lizistired.cavedust.CaveDust caveDust) {
         super(file);
