@@ -35,66 +35,10 @@ public class ModMenuConfigScreen extends GameGui {
                 .setText("menu.cavedust.global." + config.getCaveDustEnabled())
                 .setTooltip(Text.translatable("menu.cavedust.global.tooltip." + config.getCaveDustEnabled()));
 
-        /*addButton(new Button(left, row += 24).onClick(sender -> {
-            sender.getStyle().setText("menu.cavedust.enhanceddetection." + config.setEnhancedDetection()).setTooltip(Text.translatable("menu.cavedust.enhanceddetection.tooltip"));
-        })).getStyle()
-                .setText("menu.cavedust.enhanceddetection." + config.getEnhancedDetection())
-                .setTooltip(Text.translatable("menu.cavedust.enhanceddetection.tooltip"));*/
-
-        addButton(new Button(left, row += 24).onClick(sender -> {
-            sender.getStyle().setText("menu.cavedust.superflatstatus." + config.setSuperFlatStatus()).setTooltip(Text.translatable("menu.cavedust.superflatstatus.tooltip"));
-        })).getStyle()
-                .setText("menu.cavedust.superflatstatus." + config.getSuperFlatStatus())
-                .setTooltip(Text.translatable("menu.cavedust.superflatstatus.tooltip"));
-
-
-
-        /*addButton(new Slider(left, row += 48, -64, 319, config.getUpperLimit()))
-                .onChange(config::setUpperLimit)
-                .setTextFormat(transText::formatUpperLimit)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.upperlimit.tooltip"));
-
-        addButton(new Slider(left, row += 24, -64, 319, config.getLowerLimit()))
-                .onChange(config::setLowerLimit)
-                .setTextFormat(transText::formatLowerLimit)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.lowerlimit.tooltip"));*/
-
-        addButton(new Slider(left, row += 24, 1, 100, config.getParticleMultiplier()))
-                .onChange(config::setParticleMultiplier)
-                .setTextFormat(transText::formatParticleMultiplier)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.particlemultiplier.tooltip"));
-
-        addButton(new Slider(left, row += 24, 1, 100, config.getParticleMultiplierMultiplier()))
-                .onChange(config::setParticleMultiplierMultiplier)
-                .setTextFormat(transText::formatParticleMultiplierMultiplier)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.particlemultipliermultiplier.tooltip"));
-        addButton(new Button(left, row += 24).onClick(sender ->{
-            config.iterateParticle();
-            sender.getStyle().setText("Particle: " + (getNameOfParticle()));
-        })).getStyle().setText("Particle: " + (getNameOfParticle()))
-                .setTooltip(Text.translatable("menu.cavedust.particle.tooltip"));
-
-        addButton(new Slider(left += 220, row -= 96, 1, 50, config.getDimensionWidth()))
-                .onChange(config::setDimensionWidth)
-                .setTextFormat(transText::formatMaxWidth)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.width.tooltip"));
-
-        addButton(new Slider(left, row += 24, 1, 50, config.getDimensionHeight()))
-                .onChange(config::setDimensionHeight)
-                .setTextFormat(transText::formatMaxHeight)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.height.tooltip"));
-
-        addButton(new Slider(left, row += 24, 0, 10, config.getVelocityRandomness()))
-                .onChange(config::setVelocityRandomness)
-                .setTextFormat(transText::formatVelocityRandomness)
-                .getStyle().setTooltip(Text.translatable("menu.cavedust.velocityrandomness.tooltip"));
-
-
-        addButton(new Button(left -= 110, row += 120).onClick(sender -> {
-            config.resetConfig();
-            finish();
-            client.setScreen(new ModMenuConfigScreen(parent));
-        })).getStyle().setText(Text.translatable("menu.cavedust.reset")).setTooltip(Text.translatable("menu.cavedust.reset.tooltip"));
+        addButton(new Button(left, row += 120)
+                .onClick(sender ->
+                        client.setScreen(new ModMenuConfigScreenAdvanced(parent)
+                        )));
 
         addButton(new Button(left, row += 24)
                 .onClick(sender -> finish())).getStyle()

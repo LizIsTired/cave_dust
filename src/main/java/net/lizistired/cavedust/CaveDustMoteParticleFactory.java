@@ -6,9 +6,9 @@ import net.minecraft.client.particle.*;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.particle.SimpleParticleType;
 
-public class CaveDustParticleFactory extends SpriteBillboardParticle {
+public class CaveDustMoteParticleFactory extends SpriteBillboardParticle {
     private final SpriteProvider spriteProvider;
-    CaveDustParticleFactory(ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
+    CaveDustMoteParticleFactory(ClientWorld clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteProvider spriteProvider) {
         super(clientWorld, x, y, z);
         this.spriteProvider = spriteProvider; //Sets the sprite provider from above to the sprite provider in the constructor method
         this.maxAge = 200; //20 ticks = 1 second
@@ -48,7 +48,7 @@ public class CaveDustParticleFactory extends SpriteBillboardParticle {
 
 
         public Particle createParticle(SimpleParticleType type, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new CaveDustParticleFactory(world, x, y, z, velocityX, velocityY, velocityZ, this.spriteProvider);
+            return new CaveDustMoteParticleFactory(world, x, y, z, velocityX, velocityY, velocityZ, this.spriteProvider);
         }
     }
 }
