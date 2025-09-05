@@ -105,7 +105,6 @@ public class ModMenuConfigScreen extends GameGui {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(context, mouseX, mouseY, partialTicks);
         super.render(context, mouseX, mouseY, partialTicks);
     }
 
