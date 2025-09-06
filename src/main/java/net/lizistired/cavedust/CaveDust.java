@@ -40,6 +40,10 @@ import static net.lizistired.cavedust.utils.KeybindingHelper.*;
 public class CaveDust implements ClientModInitializer {
 	//logger
 	public static final Logger LOGGER = LoggerFactory.getLogger("cavedust");
+
+	//modid
+	public static final String modid = "cave_dust";
+
 	//make class static
 	private static CaveDust instance;
 	public static CaveDust getInstance() {
@@ -54,7 +58,7 @@ public class CaveDust implements ClientModInitializer {
 		return config;
 	}
 
-	public static ParticleEffect WHITE_ASH_ID = (ParticleEffect) Registries.PARTICLE_TYPE.get(Identifier.of("cavedust", "cave_dust"));
+	public static ParticleEffect WHITE_ASH_ID = (ParticleEffect) Registries.PARTICLE_TYPE.get(Identifier.of(modid, "cave_dust"));
 	public static int PARTICLE_AMOUNT = 0;
 	public static int PARTICLE_RADIUS_PLUME = 50;
 	CubeCreator cubeCreator = new CubeCreator();
@@ -66,8 +70,8 @@ public class CaveDust implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		//config path and loading
-		Path CaveDustFolder = GamePaths.getConfigDirectory().resolve("cavedust");
-		config = new CaveDustConfig(CaveDustFolder.getParent().resolve("cavedust.json"), this);
+		Path CaveDustFolder = GamePaths.getConfigDirectory().resolve(modid);
+		config = new CaveDustConfig(CaveDustFolder.getParent().resolve(modid + ".json"), this);
 		config.load();
 		registerKeyBindings();
 		ParticleFactoryRegistry.getInstance().register(CaveDustServer.CAVE_DUST_MOTE, CaveDustMoteParticleFactory.Factory::new);
@@ -106,8 +110,11 @@ public class CaveDust implements ClientModInitializer {
 		if (client.world == null) return;
 		World world = client.world;
 
-		for (int i = 0; i < 5000; i++) {
-			cubeCreator.randomSphereCreator(5, 0, 0, 0);
+		for (int i = 0; i < 5; i++) {
+			cubeCreator.randomSphereCreator(5, 0, 0, 0, Identifier.of(modid, "cave_dust_mote"));
+		}
+		for (int i = 0; i < 1; i++) {
+			cubeCreator.randomSphereCreator(20, 0, 0, 0, Identifier.of(modid, "cave_dust_plume"));
 		}
 
     }
@@ -136,8 +143,8 @@ public class CaveDust implements ClientModInitializer {
 		//	}
 
 	//cubeCreator.cubeCreator(50, 0, 0, 0);
-		for (int i = 0; i < 5000; i++) {
-			cubeCreator.randomSphereCreator(5, 0, 0, 0);
+		for (int i = 0; i < 1; i++) {
+			cubeCreator.randomSphereCreator(5, 0, 0, 0, Identifier.of("cavedust", "cave_dust_mote"));
 		}
 
 

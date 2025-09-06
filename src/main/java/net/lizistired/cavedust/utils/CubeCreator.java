@@ -1,21 +1,18 @@
 package net.lizistired.cavedust.utils;
 
-import com.jcraft.jorbis.Block;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class CubeCreator {
 
 
     // 3 nesting for loops to create a hollow border cube around the player
-    public void cubeCreator(int steps, int offsetXInitial, int offsetYInitial, int offsetZInitial) {
+    public void cubeCreator(int steps, int offsetXInitial, int offsetYInitial, int offsetZInitial, Identifier caveDust) {
         BlockPos playerPos = MinecraftClient.getInstance().player.getBlockPos();
 
         // Loop over the range of steps around the player
@@ -30,7 +27,7 @@ public class CubeCreator {
 
                     // If it's on the border, spawn the particle
                     if (onBorder) {
-                        spawnParticleClient(playerPos.getX() + x, playerPos.getY() + y, playerPos.getZ() + z);
+                        spawnParticleClient(playerPos.getX() + x, playerPos.getY() + y, playerPos.getZ() + z, caveDust);
                     }
                 }
             }
@@ -38,7 +35,7 @@ public class CubeCreator {
     }
 
     // Create a hollow sphere around the player
-    public void sphereCreator(int radius, int offsetXInitial, int offsetYInitial, int offsetZInitial) {
+    public void sphereCreator(int radius, int offsetXInitial, int offsetYInitial, int offsetZInitial, Identifier caveDust) {
         BlockPos playerPos = MinecraftClient.getInstance().player.getBlockPos();
 
         // Loop over the range of steps around the player (we are using a cube bounding box to check)
@@ -53,14 +50,15 @@ public class CubeCreator {
                     if (Math.abs(distance - radius) < 1.5) { // Threshold for thickness of the border
                         spawnParticleClient(playerPos.getX() + x + offsetXInitial,
                                 playerPos.getY() + y + offsetYInitial,
-                                playerPos.getZ() + z + offsetZInitial);
+                                playerPos.getZ() + z + offsetZInitial,
+                                    caveDust);
                     }
                 }
             }
         }
     }
 
-    public void randomSphereCreator(int radius, int offsetXInitial, int offsetYInitial, int offsetZInitial) {
+    public void randomSphereCreator(int radius, int offsetXInitial, int offsetYInitial, int offsetZInitial, Identifier caveDust) {
         Random random = new Random();  // Random number generator
 
         // Generate random spherical angles
@@ -82,10 +80,10 @@ public class CubeCreator {
         float randomX = random.nextFloat() + spawnX;
         float randomY = random.nextFloat() + spawnY;
         float randomZ = random.nextFloat() + spawnZ;
-        spawnParticleClient(randomX, randomY, randomZ);
+        spawnParticleClient(randomX, randomY, randomZ, caveDust);
     }
 
-    private void spawnParticleClient(float x, float y, float z) {
-        MinecraftClient.getInstance().world.addParticleClient((ParticleEffect) Registries.PARTICLE_TYPE.get(Identifier.of("cavedust", "cave_dust_mote")), x, y, z, 0.0D, 0.0D, 0.0D);
+    private void spawnParticleClient(float x, float y, float z, Identifier caveDust) {
+        MinecraftClient.getInstance().world.addParticleClient((ParticleEffect) Registries.PARTICLE_TYPE.get(caveDust), x, y, z, 0.0D, 0.0D, 0.0D);
     }
 }
