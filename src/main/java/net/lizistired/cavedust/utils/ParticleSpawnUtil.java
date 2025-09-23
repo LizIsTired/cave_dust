@@ -1,14 +1,13 @@
 package net.lizistired.cavedust.utils;
 
 import net.lizistired.cavedust.CaveDustConfig;
-import net.lizistired.cavedust.mixin.ClientWorldAccessor;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-
+import net.lizistired.cavedust.mixin.ClientLevelDataAccessor;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import java.util.Objects;
 
-import static net.minecraft.world.biome.BiomeKeys.LUSH_CAVES;
+import static net.minecraft.world.level.biome.Biomes.LUSH_CAVES;
 
 public class ParticleSpawnUtil {
     private static float timer;
@@ -18,29 +17,28 @@ public class ParticleSpawnUtil {
     /**
      * Returns true if particles should spawn.
      * @param client MinecraftClient
-     * @param config CaveDustConfig
      * @return boolean
      */
-    public static boolean shouldParticlesSpawn(MinecraftClient client, CaveDustConfig config) {
+    public static boolean shouldParticlesSpawn(Minecraft client) {
 
         //checks if the config is enabled, if the game isn't paused, if the world is valid, if the particle is valid and if the player isn't in a lush caves biome
-        if (!config.getCaveDustEnabled()
+        if (!CaveDustConfig.caveDustEnabled
                 || client.isPaused()
-                || client.world == null
-                || !client.world.getDimension().bedWorks()
-                || Objects.requireNonNull(client.player).isSubmergedInWater()
-                || client.world.getBiome(Objects.requireNonNull(client.player.getBlockPos())).matchesKey(LUSH_CAVES))
+                || client.level == null
+                || !client.level.dimensionType().bedWorks()
+                || Objects.requireNonNull(client.player).isUnderWater()
+                || client.level.getBiome(Objects.requireNonNull(client.player.blockPosition())).is(LUSH_CAVES))
         {
             timer = 0;
             shouldParticlesSpawn = false;
             return false;
         }
 
-        World world = client.world;
+        Level world = client.level;
         int seaLevel = world.getSeaLevel();
 
-        if (!client.player.clientWorld.isSkyVisible(client.player.getBlockPos())) {
-            if (client.player.getBlockPos().getY() + 2 < seaLevel){
+        if (!client.player.clientLevel.canSeeSky(client.player.blockPosition())) {
+            if (client.player.blockPosition().getY() + 2 < seaLevel){
                 timer = timer + 1;
                 if (timer > 10){
                     timer = 10;
@@ -56,36 +54,35 @@ public class ParticleSpawnUtil {
     /**
      * Returns true if particles should spawn (uses particle position instead of player).
      * @param client MinecraftClient
-     * @param config CaveDustConfig
      * @param pos BlockPos
      * @return boolean
      */
-    public static boolean shouldParticlesSpawn(MinecraftClient client, CaveDustConfig config, BlockPos pos) {
+    public static boolean shouldParticlesSpawn(Minecraft client, BlockPos pos) {
 
         //checks if the config is enabled, if the game isn't paused, if the world is valid, if the particle is valid and if the player isn't in a lush caves biome
-        if (!config.getCaveDustEnabled()
+        if (!CaveDustConfig.caveDustEnabled
                 || client.isPaused()
-                || client.world == null
-                || !client.world.getDimension().bedWorks()
-                || (client.world.getBottomY() > pos.getY())
+                || client.level == null
+                || !client.level.dimensionType().bedWorks()
+                || (client.level.getMinBuildHeight() > pos.getY())
                 //|| client.world.getBiome(Objects.requireNonNull(pos)).matchesKey(LUSH_CAVES))
-                || client.world.getBiome(Objects.requireNonNull(pos)).matchesKey(LUSH_CAVES))
+                || client.level.getBiome(Objects.requireNonNull(pos)).is(LUSH_CAVES))
 
         {
             timer = 0;
             shouldParticlesSpawn = false;
             return false;
         }
-        if(!config.getSuperFlatStatus()) {
-            if (((ClientWorldAccessor) client.world.getLevelProperties()).getFlatWorld()) {
+        if(!CaveDustConfig.superFlatStatus) {
+            if (((ClientLevelDataAccessor) client.level.getLevelData()).getIsFlat()) {
                 return false;
             }
         }
 
-        World world = client.world;
+        Level world = client.level;
         int seaLevel = world.getSeaLevel();
 
-        if (!client.player.clientWorld.isSkyVisible(pos)) {
+        if (!client.player.clientLevel.canSeeSky(pos)) {
             if (pos.getY() + 2 < seaLevel){
                 timer = timer + 1;
                 if (timer > 10){

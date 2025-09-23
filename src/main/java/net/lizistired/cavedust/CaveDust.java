@@ -1,101 +1,116 @@
 package net.lizistired.cavedust;
 
-//minecraft imports
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-//other imports
-import com.minelittlepony.common.util.GamePaths;
-import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import com.mojang.logging.LogUtils;
+import net.lizistired.cavedust.utils.KeybindingHelper;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.Level;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.neoforge.client.event.ClientTickEvent;
+import net.neoforged.neoforge.client.event.CustomizeGuiOverlayEvent;
+import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
+import net.neoforged.neoforge.registries.DeferredRegister;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-//java imports
-import java.nio.file.Path;
-//static imports
-import static net.lizistired.cavedust.utils.MathHelper.*;
+
+import java.util.function.Supplier;
+
 import static net.lizistired.cavedust.utils.MathHelper.generateRandomDouble;
+import static net.lizistired.cavedust.utils.MathHelper.normalize;
 import static net.lizistired.cavedust.utils.ParticleSpawnUtil.shouldParticlesSpawn;
-import static net.lizistired.cavedust.utils.KeybindingHelper.*;
+
+@Mod(CaveDust.MODID)
+public class CaveDust
+{
+    public static final String MODID = "cavedust";
+    private static final Logger LOGGER = LogUtils.getLogger();
 
 
-public class CaveDust implements ClientModInitializer {
-	//logger
-	public static final Logger LOGGER = LoggerFactory.getLogger("cavedust");
-	//make class static
-	private static CaveDust instance;
-	public static CaveDust getInstance() {
-		return instance;
-	}
-	public CaveDust() {
-		instance = this;
-	}
-	//config assignment
-	private static net.lizistired.cavedust.CaveDustConfig config;
-	public net.lizistired.cavedust.CaveDustConfig getConfig() {
-		return config;
-	}
+    public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES =
+            DeferredRegister.create(BuiltInRegistries.PARTICLE_TYPE, MODID);
 
-	public static ParticleEffect WHITE_ASH_ID = (ParticleEffect) Registries.PARTICLE_TYPE.get(Identifier.of("cavedust", "cave_dust"));
-	public static int PARTICLE_AMOUNT = 0;
+    public static final Supplier<SimpleParticleType> CAVE_DUST_PARTICLE = PARTICLE_TYPES.register(
+            "cave_dust",
+            () -> new SimpleParticleType(false)
+    );
 
+    public static int PARTICLE_AMOUNT = 0;
 
+    public CaveDust(IEventBus modEventBus, ModContainer modContainer)
+    {
+        PARTICLE_TYPES.register(modEventBus);
+        modContainer.registerConfig(ModConfig.Type.CLIENT, CaveDustConfig.SPEC);
+    }
 
+    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    public static class ClientModEvents {
+        @SubscribeEvent
+        public static void registerParticleProviders(RegisterParticleProvidersEvent event) {
+            event.registerSpriteSet(CAVE_DUST_PARTICLE.get(), CaveDustParticle.CaveDustProvider::new);
+        }
+        @SubscribeEvent // on the mod event bus only on the physical client
+        public static void registerBindings(RegisterKeyMappingsEvent event) {
+            KeybindingHelper.registerKeyBindings(event);
+        }
+    }
+    @EventBusSubscriber(modid = MODID, bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+    public static class ClientGameEvents
+    {
+        @SubscribeEvent
+        public static void createCaveDust(ClientTickEvent.Post event)
+        {
+            Minecraft client = Minecraft.getInstance();
+            while (KeybindingHelper.keyBinding1.get().consumeClick()) {
+                CaveDustConfig.CAVE_DUST_ENABLED.set(!CaveDustConfig.caveDustEnabled);
+                CaveDustConfig.CAVE_DUST_ENABLED.save();
+                LOGGER.info("Toggled dust");
+                client.player.displayClientMessage(Component.translatable("debug.cavedust.toggle." + CaveDustConfig.caveDustEnabled), false);
+            }
+            while (KeybindingHelper.keyBinding2.get().consumeClick()) {
+                CaveDustConfig.onLoad(null);
+                LOGGER.info("Reloaded config");
+                client.player.displayClientMessage(Component.translatable("debug.cavedust.reload"), false);
+            }
 
-	@Override
-	public void onInitializeClient() {
-		//config path and loading
-		Path CaveDustFolder = GamePaths.getConfigDirectory().resolve("cavedust");
-		config = new CaveDustConfig(CaveDustFolder.getParent().resolve("cavedust.json"), this);
-		config.load();
-		registerKeyBindings();
-		ParticleFactoryRegistry.getInstance().register(CaveDustServer.CAVE_DUST, CaveDustParticleFactory.Factory::new);
+            //ensure world is not null
+            if (client.level == null) return;
+            Level world = client.level;
 
-		//register end client tick to create cave dust function, using end client tick for async
-		ClientTickEvents.END_CLIENT_TICK.register(this::createCaveDust);
-	}
+            //LOGGER.info(String.valueOf(((ClientWorldAccessor) client.world.getLevelProperties()).getFlatWorld()));
+            // )
+            double probabilityNormalized = normalize(CaveDustConfig.lowerLimit, CaveDustConfig.upperLimit, client.player.getBlockY());
+            PARTICLE_AMOUNT = (int) (probabilityNormalized * CaveDustConfig.particleMultiplier * CaveDustConfig.particleMultiplierMultiplier);
 
-	private void createCaveDust(MinecraftClient client) {
-		if (keyBinding1.wasPressed()){
-			getConfig().toggleCaveDust();
-			LOGGER.info("Toggled dust");
-			client.player.sendMessage(Text.translatable("debug.cavedust.toggle." + config.getCaveDustEnabled()), false);
-		}
-		if (keyBinding2.wasPressed()){
-			getConfig().load();
-			LOGGER.info("Reloaded config");
-			client.player.sendMessage(Text.translatable("debug.cavedust.reload"), false);
-		}
+            for (int i = 0; i < PARTICLE_AMOUNT; i++) {
+                int x = (int) (client.player.position().x() + (int) generateRandomDouble(CaveDustConfig.width *-1, CaveDustConfig.width ));
+                int y = (int) (client.player.getEyePosition().y() + (int) generateRandomDouble(CaveDustConfig.height *-1, CaveDustConfig.height));
+                int z = (int) (client.player.position().z() + (int) generateRandomDouble(CaveDustConfig.width  *-1, CaveDustConfig.width));
+                double miniX = (x + Math.random());
+                double miniY = (y + Math.random());
+                double miniZ = (z + Math.random());
+                BlockPos particlePos = new BlockPos(x, y, z);
 
-		//ensure world is not null
-		if (client.world == null) return;
-		World world = client.world;
-
-		//LOGGER.info(String.valueOf(((ClientWorldAccessor) client.world.getLevelProperties()).getFlatWorld()));
-		// )
-		double probabilityNormalized = normalize(config.getLowerLimit(), config.getUpperLimit(), client.player.getBlockY());
-		PARTICLE_AMOUNT = (int) (probabilityNormalized * config.getParticleMultiplier() * config.getParticleMultiplierMultiplier());
-
-		for (int i = 0; i < PARTICLE_AMOUNT; i++) {
-				int x = (int) (client.player.getPos().getX() + (int) generateRandomDouble(config.getDimensionWidth() *-1, config.getDimensionWidth()));
-				int y = (int) (client.player.getEyePos().getY() + (int) generateRandomDouble(config.getDimensionHeight() *-1, config.getDimensionHeight()));
-				int z = (int) (client.player.getPos().getZ() + (int) generateRandomDouble(config.getDimensionWidth() *-1, config.getDimensionWidth()));
-				double miniX = (x + Math.random());
-				double miniY = (y + Math.random());
-				double miniZ = (z + Math.random());
-				BlockPos particlePos = new BlockPos(x, y, z);
-
-				if (shouldParticlesSpawn(client, config, particlePos)) {
-					if (client.world.getBlockState(particlePos).isAir()) {
-						world.addParticle(getConfig().getParticle(), miniX, miniY, miniZ, config.getVelocityRandomnessRandom() * 0.01, config.getVelocityRandomnessRandom() * 0.01, config.getVelocityRandomnessRandom() * 0.01);
-					}
-				}
-			}
-		}
-	}
+                if (shouldParticlesSpawn(client, particlePos)) {
+                    if (client.level.getBlockState(particlePos).isAir()) {
+                        world.addParticle(CAVE_DUST_PARTICLE.get(), miniX, miniY, miniZ, CaveDustConfig.getVelocityRandomnessRandom() * 0.01, CaveDustConfig.getVelocityRandomnessRandom() * 0.01, CaveDustConfig.getVelocityRandomnessRandom() * 0.01);
+                    }
+                }
+            }
+        }
+        @SubscribeEvent
+        public static void appendDebugText(CustomizeGuiOverlayEvent.DebugText event)
+        {
+            event.getRight().add("Particle amount evaluated: " + PARTICLE_AMOUNT);
+        }
+    }
+}
