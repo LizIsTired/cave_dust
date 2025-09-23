@@ -1,7 +1,7 @@
 package net.lizistired.cavedust.utils;
 
-import net.lizistired.cavedust.Config;
-//import net.lizistired.cavedust.mixin.ClientWorldAccessor;
+import net.lizistired.cavedust.CaveDustConfig;
+import net.lizistired.cavedust.mixin.ClientLevelDataAccessor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -22,7 +22,7 @@ public class ParticleSpawnUtil {
     public static boolean shouldParticlesSpawn(Minecraft client) {
 
         //checks if the config is enabled, if the game isn't paused, if the world is valid, if the particle is valid and if the player isn't in a lush caves biome
-        if (!Config.caveDustEnabled
+        if (!CaveDustConfig.caveDustEnabled
                 || client.isPaused()
                 || client.level == null
                 || !client.level.dimensionType().bedWorks()
@@ -60,7 +60,7 @@ public class ParticleSpawnUtil {
     public static boolean shouldParticlesSpawn(Minecraft client, BlockPos pos) {
 
         //checks if the config is enabled, if the game isn't paused, if the world is valid, if the particle is valid and if the player isn't in a lush caves biome
-        if (!Config.caveDustEnabled
+        if (!CaveDustConfig.caveDustEnabled
                 || client.isPaused()
                 || client.level == null
                 || !client.level.dimensionType().bedWorks()
@@ -73,10 +73,10 @@ public class ParticleSpawnUtil {
             shouldParticlesSpawn = false;
             return false;
         }
-        if(!Config.superFlatStatus) {
-//            if (((ClientWorldAccessor) client.level.getLevelData()).getFlatWorld()) {
-//                return false;
-//            }
+        if(!CaveDustConfig.superFlatStatus) {
+            if (((ClientLevelDataAccessor) client.level.getLevelData()).getIsFlat()) {
+                return false;
+            }
         }
 
         Level world = client.level;

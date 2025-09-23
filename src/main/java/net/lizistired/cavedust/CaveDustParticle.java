@@ -3,14 +3,12 @@ package net.lizistired.cavedust;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.*;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.neoforged.api.distmarker.Dist;
+import org.jetbrains.annotations.NotNull;
 
 public class CaveDustParticle extends TextureSheetParticle {
     private final SpriteSet spriteSet;
 
-    // First four parameters are self-explanatory. The SpriteSet parameter is provided by the
-    // ParticleProvider, see below. You may also add additional parameters as needed, e.g. xSpeed/ySpeed/zSpeed.
-    public     CaveDustParticle(ClientLevel clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteSet spriteProvider) {
+    public CaveDustParticle(ClientLevel clientWorld, double x, double y, double z, double velocityX, double velocityY, double velocityZ, SpriteSet spriteProvider) {
 
         super(clientWorld, x, y, z);
         this.spriteSet = spriteProvider; //Sets the sprite provider from above to the sprite provider in the constructor method
@@ -36,23 +34,20 @@ public class CaveDustParticle extends TextureSheetParticle {
         this.alpha -= 0.005f;
     }
     @Override
-    public ParticleRenderType getRenderType() {
+    public @NotNull ParticleRenderType getRenderType() {
         return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
-//    public static class Factory implements ParticleProvider<SimpleParticleType> {
-//        private final SpriteSet spriteProvider;
-//
-//        public Factory(SpriteSet spriteProvider) {
-//            this.spriteProvider = spriteProvider;
-//        }
-//
-//
-//        public Particle createParticle(SimpleParticleType type, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-//            return new CaveDustParticleFactory(world, x, y, z, velocityX, velocityY, velocityZ, this.spriteProvider);
-//        }
-//    }
-// The generic type of ParticleProvider must match the type of the particle type this provider is for.
+    public static class CaveDustProvider implements ParticleProvider<SimpleParticleType> {
+        private final SpriteSet spriteSet;
 
+        public CaveDustProvider(SpriteSet spriteSet) { this.spriteSet = spriteSet; }
+
+        @Override
+        public Particle createParticle(SimpleParticleType type, ClientLevel level,
+                                       double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
+            return new CaveDustParticle(level, x, y, z, xSpeed, ySpeed, zSpeed, spriteSet);
+        }
+    }
 }
 
