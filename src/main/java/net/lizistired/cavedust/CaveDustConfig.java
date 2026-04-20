@@ -2,17 +2,10 @@ package net.lizistired.cavedust;
 
 import com.google.common.collect.ImmutableList;
 import net.lizistired.cavedust.utils.JsonFile;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+
 import static net.lizistired.cavedust.CaveDust.*;
 import static net.lizistired.cavedust.utils.MathHelper.*;
 
@@ -32,15 +25,15 @@ public class CaveDustConfig extends JsonFile {
     private boolean superFlatStatus = false;
     private float upperLimit = 64;
     private float lowerLimit = -64;
-    private int particleMultiplier = 1;
+    private int particleMultiplier = 25;
 
     int listNumber = 0;
 
     private int particleMultiplierMultiplier = 10;
 
-    List<Identifier> list = List.of(Registries.PARTICLE_TYPE.getIds().toArray(new Identifier[0]));
+    List<Identifier> list = List.of(BuiltInRegistries.PARTICLE_TYPE.keySet().toArray(new Identifier[0]));
 
-    Identifier newId = Identifier.of("cavedust", "cave_dust_mote");
+    Identifier newId = Identifier.fromNamespaceAndPath("cavedust", "cave_dust_mote");
 
     public CaveDustConfig(Path file, net.lizistired.cavedust.CaveDust caveDust) {
         super(file);
@@ -152,9 +145,9 @@ public class CaveDustConfig extends JsonFile {
     //    }
     //}
 
-    public ParticleEffect getParticle(){
+    public ParticleOptions getParticle(){
         try{
-            return (ParticleEffect) Registries.PARTICLE_TYPE.get(newId);
+            return (ParticleOptions) BuiltInRegistries.PARTICLE_TYPE.getValue(newId);
         }
         catch (ClassCastException e){
             iterateParticle();
@@ -208,7 +201,7 @@ public class CaveDustConfig extends JsonFile {
         save();
     }
 
-    public ParticleEffect getParticleID(){
+    public ParticleOptions getParticleID(){
         return getParticle();
     }
 
@@ -219,11 +212,11 @@ public class CaveDustConfig extends JsonFile {
         upperLimit = 64;
         lowerLimit = -64;
 
-        particleMultiplier = 1;
+        particleMultiplier = 25;
         particleMultiplierMultiplier = 10;
         velocityRandomness = 0;
 
-        newId = Identifier.of("cavedust", "cave_dust");
+        newId = Identifier.fromNamespaceAndPath("cavedust", "cave_dust_mote");
 
         seaLevelCheck = true;
         caveDustEnabled = true;

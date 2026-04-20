@@ -1,38 +1,27 @@
 package net.lizistired.cavedust;
 
 //minecraft imports
-import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.particle.v1.ParticleRenderEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.level.LevelRenderEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.lizistired.cavedust.utils.CubeCreator;
-import net.minecraft.block.Block;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.particle.ParticleType;
-import net.minecraft.particle.ParticleUtil;
-import net.minecraft.registry.Registries;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.world.World;
+import net.minecraft.world.level.Level;
 //other imports
 import com.minelittlepony.common.util.GamePaths;
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.world.event.GameEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //java imports
 import java.nio.file.Path;
 //static imports
 import static net.lizistired.cavedust.utils.MathHelper.*;
-import static net.lizistired.cavedust.utils.MathHelper.generateRandomDouble;
 import static net.lizistired.cavedust.utils.ParticleSpawnUtil.shouldParticlesSpawn;
 import static net.lizistired.cavedust.utils.KeybindingHelper.*;
 
@@ -54,11 +43,11 @@ public class CaveDust implements ClientModInitializer {
 		return config;
 	}
 
-	public static ParticleEffect WHITE_ASH_ID = (ParticleEffect) Registries.PARTICLE_TYPE.get(Identifier.of("cavedust", "cave_dust"));
+	public static ParticleOptions WHITE_ASH_ID = (ParticleOptions) BuiltInRegistries.PARTICLE_TYPE.getValue(Identifier.fromNamespaceAndPath("cavedust", "cave_dust"));
 	public static int PARTICLE_AMOUNT = 0;
 	public static int PARTICLE_RADIUS_PLUME = 50;
 	CubeCreator cubeCreator = new CubeCreator();
-	MinecraftClient client;
+	Minecraft client;
 
 
 
@@ -70,11 +59,11 @@ public class CaveDust implements ClientModInitializer {
 		config = new CaveDustConfig(CaveDustFolder.getParent().resolve("cavedust.json"), this);
 		config.load();
 		registerKeyBindings();
-		ParticleFactoryRegistry.getInstance().register(CaveDustServer.CAVE_DUST_MOTE, CaveDustMoteParticleFactory.Factory::new);
-		ParticleFactoryRegistry.getInstance().register(CaveDustServer.CAVE_DUST_PLUME, CaveDustPlumeParticleFactory.Factory::new);
+		ParticleProviderRegistry.getInstance().register(CaveDustServer.CAVE_DUST_MOTE, CaveDustMoteParticleFactory.Factory::new);
+		ParticleProviderRegistry.getInstance().register(CaveDustServer.CAVE_DUST_PLUME, CaveDustPlumeParticleFactory.Factory::new);
 
 		//register end client tick to create cave dust function, using end client tick for async
-		WorldRenderEvents.LAST.register(this::createCaveDust);
+		LevelRenderEvents.END_MAIN.register(this::createCaveDust);
 		ServerLifecycleEvents.SERVER_STOPPING.register(this::nullClient);
 	}
 
@@ -82,42 +71,44 @@ public class CaveDust implements ClientModInitializer {
 		client = null;
 	}
 
-	private void createCaveDust(WorldRenderContext worldRenderContext) {
+	private void createCaveDust(LevelRenderContext context) {
 		if(client == null) {
 			try {
-				client = worldRenderContext.gameRenderer().getClient();
+				client = context.gameRenderer().getMinecraft();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
 
-		if (keyBinding1.wasPressed()){
+		if (keyBinding1.consumeClick()){
 			getConfig().toggleCaveDust();
 			LOGGER.info("Toggled dust");
-			client.player.sendMessage(Text.translatable("debug.cavedust.toggle." + config.getCaveDustEnabled()), true);
+			client.player.sendOverlayMessage(Component.translatable("debug.cavedust.toggle." + config.getCaveDustEnabled()));
 		}
-		if (keyBinding2.wasPressed()){
+		if (keyBinding2.consumeClick()){
 			getConfig().load();
 			LOGGER.info("Reloaded config");
-			client.player.sendMessage(Text.translatable("debug.cavedust.reload"), true);
+			client.player.sendOverlayMessage(Component.translatable("debug.cavedust.reload"));
 		}
 
 		//ensure world is not null
-		if (client.world == null) return;
-		World world = client.world;
+		if (client.level == null) return;
+		Level world = client.level;
 
-		for (int i = 0; i < 5000; i++) {
-			cubeCreator.randomSphereCreator(5, 0, 0, 0);
+		double probabilityNormalized = normalize(config.getLowerLimit(), config.getUpperLimit(), client.player.getBlockY());
+		PARTICLE_AMOUNT = (int) (probabilityNormalized * config.getParticleMultiplier());
+
+		for (int i = 0; i < PARTICLE_AMOUNT; i++) {
+			cubeCreator.randomSphereCreator((int) config.getDimensionWidth(), 0, 0, 0);
 		}
 
     }
 
-	private void createCaveDust(MinecraftClient client) {
+	private void createCaveDust1(Minecraft client) {
 
 		//LOGGER.info(String.valueOf(((ClientWorldAccessor) client.world.getLevelProperties()).getFlatWorld()));
 		// )
-		double probabilityNormalized = normalize(config.getLowerLimit(), config.getUpperLimit(), client.player.getBlockY());
-		PARTICLE_AMOUNT = (int) (probabilityNormalized * config.getParticleMultiplier() * config.getParticleMultiplierMultiplier());
+
 
 		//for (int i = 0; i < PARTICLE_AMOUNT; i++) {
 		//		int x = (int) (client.player.getPos().getX() + (int) generateRandomDouble(config.getDimensionWidth() *-1, config.getDimensionWidth()));
@@ -135,7 +126,6 @@ public class CaveDust implements ClientModInitializer {
 		//		}
 		//	}
 
-	//cubeCreator.cubeCreator(50, 0, 0, 0);
 		for (int i = 0; i < 5000; i++) {
 			cubeCreator.randomSphereCreator(5, 0, 0, 0);
 		}
