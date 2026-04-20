@@ -1,22 +1,24 @@
 package net.lizistired.cavedust.utils;
 
 import com.jcraft.jorbis.Block;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.particle.ParticleEffect;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.lizistired.cavedust.CaveDust;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+
 public class CubeCreator {
 
+    private static final Random random = new Random();
 
     // 3 nesting for loops to create a hollow border cube around the player
     public void cubeCreator(int steps, int offsetXInitial, int offsetYInitial, int offsetZInitial) {
-        BlockPos playerPos = MinecraftClient.getInstance().player.getBlockPos();
+        BlockPos playerPos = Minecraft.getInstance().player.blockPosition();
 
         // Loop over the range of steps around the player
         for (int x = -steps / 2 + offsetXInitial; x < steps / 2 + offsetXInitial; x++) {
@@ -39,7 +41,7 @@ public class CubeCreator {
 
     // Create a hollow sphere around the player
     public void sphereCreator(int radius, int offsetXInitial, int offsetYInitial, int offsetZInitial) {
-        BlockPos playerPos = MinecraftClient.getInstance().player.getBlockPos();
+        BlockPos playerPos = Minecraft.getInstance().player.blockPosition();
 
         // Loop over the range of steps around the player (we are using a cube bounding box to check)
         for (int x = -radius; x <= radius; x++) {
@@ -61,31 +63,34 @@ public class CubeCreator {
     }
 
     public void randomSphereCreator(int radius, int offsetXInitial, int offsetYInitial, int offsetZInitial) {
-        Random random = new Random();  // Random number generator
 
-        // Generate random spherical angles
-        double theta = Math.acos(2 * random.nextDouble() - 1);  // Random polar angle (0 to pi)
-        double phi = 2 * Math.PI * random.nextDouble();  // Random azimuthal angle (0 to 2*pi)
+        // Random radius (correct distribution)
+        double r = radius * Math.pow(random.nextDouble(), 0.2);
 
-        // Convert spherical coordinates to Cartesian coordinates
-        double x = radius * Math.sin(theta) * Math.cos(phi);
-        double y = radius * Math.sin(theta) * Math.sin(phi);
-        double z = radius * Math.cos(theta);
+        // Random spherical angles
+        double theta = Math.acos(2 * random.nextDouble() - 1);
+        double phi = 2 * Math.PI * random.nextDouble();
 
-        // Offset the generated point to be around the player
-        BlockPos playerPos = MinecraftClient.getInstance().player.getBlockPos();
+        // Convert to Cartesian coordinates
+        double x = r * Math.sin(theta) * Math.cos(phi);
+        double y = r * Math.sin(theta) * Math.sin(phi);
+        double z = r * Math.cos(theta);
+
+        // Player position
+        BlockPos playerPos = Minecraft.getInstance().player.blockPosition();
         int spawnX = playerPos.getX() + (int) (x + offsetXInitial);
         int spawnY = playerPos.getY() + (int) (y + offsetYInitial);
         int spawnZ = playerPos.getZ() + (int) (z + offsetZInitial);
 
-        // Spawn a particle at the random position
+        // Slight randomness within the block
         float randomX = random.nextFloat() + spawnX;
         float randomY = random.nextFloat() + spawnY;
         float randomZ = random.nextFloat() + spawnZ;
+
         spawnParticleClient(randomX, randomY, randomZ);
     }
 
     private void spawnParticleClient(float x, float y, float z) {
-        MinecraftClient.getInstance().world.addParticleClient((ParticleEffect) Registries.PARTICLE_TYPE.get(Identifier.of("cavedust", "cave_dust_mote")), x, y, z, 0.0D, 0.0D, 0.0D);
+        Minecraft.getInstance().level.addParticle(CaveDust.getInstance().getConfig().getParticle(), x, y, z, 0.0D, 0.0D, 0.0D);
     }
 }

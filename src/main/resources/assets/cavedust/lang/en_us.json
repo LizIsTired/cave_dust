@@ -5,9 +5,9 @@
   "menu.cavedust.global.true": "Cave Dust: Enabled",
   "menu.cavedust.global.tooltip.false": "Enable cave dust particles?",
   "menu.cavedust.global.tooltip.true": "Disable cave dust particles?",
-  "menu.cavedust.width": "Width bounds: %s",
+  "menu.cavedust.width": "Radius: %s",
   "menu.cavedust.height": "Height bounds: %s",
-  "menu.cavedust.width.tooltip": "Maximum width to spawn particle.",
+  "menu.cavedust.width.tooltip": "Radius of sphere to spawn particles.",
   "menu.cavedust.height.tooltip": "Maximum height to spawn particle.",
   "menu.cavedust.upperlimit": "Upper limit height: %s",
   "menu.cavedust.lowerlimit": "Lower limit height: %s",
@@ -32,7 +32,7 @@
 
   "key.cavedust.reload": "Reload Config",
   "key.cavedust.toggle": "Toggle Particles",
-  "category.cavedust.spook": "Cave Dust",
+  "key.category.cavedust.spook": "Cave Dust",
 
   "debug.cavedust.toggle.true": "(Cave Dust) Enabled particles",
   "debug.cavedust.toggle.false": "(Cave Dust) Disabled particles",
