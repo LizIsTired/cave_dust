@@ -69,7 +69,7 @@ public class ModMenuConfigScreenAdvanced extends GameGui {
         addButton(new Button(left, row += 120).onClick(sender -> {
             config.resetConfig();
             finish();
-            minecraft.setScreen(new ModMenuConfigScreenAdvanced(parent));
+            minecraft.setScreenAndShow(new ModMenuConfigScreenAdvanced(parent));
         })).getStyle().setText(Component.translatable("menu.cavedust.reset")).setTooltip(Component.translatable("menu.cavedust.reset.tooltip"));
 
         addButton(new Button(left, row += 24)

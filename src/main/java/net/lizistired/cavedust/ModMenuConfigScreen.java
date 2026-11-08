@@ -40,7 +40,7 @@ public class ModMenuConfigScreen extends GameGui {
 
         addButton(new Button(left, row += 120)
                 .onClick(sender ->
-                        minecraft.setScreen(new ModMenuConfigScreenAdvanced(parent)
+                        minecraft.setScreenAndShow(new ModMenuConfigScreenAdvanced(parent)
                         ))).getStyle().setText("menu.cavedust.title.advanced");
 
         addButton(new Button(left, row += 24)

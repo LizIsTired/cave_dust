@@ -74,7 +74,7 @@ public class CaveDust implements ClientModInitializer {
 	private void createCaveDust(LevelRenderContext context) {
 		if(client == null) {
 			try {
-				client = context.gameRenderer().getMinecraft();
+				client = net.minecraft.client.Minecraft.getInstance();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
